@@ -1,0 +1,446 @@
+// third-party
+import { createSlice } from '@reduxjs/toolkit';
+
+// project imports
+import axios from 'utils/axios';
+import { dispatch } from '../index';
+
+const dataRoutes = {
+
+getColumns: '/api/kanban/columns',
+getItems: '/api/kanban/items',
+getColumnsOrder: '/api/kanban/columns-order',
+
+getComments: '/api/kanban/comments',
+getProfiles: '/api/kanban/profiles',
+getItems: '/api/kanban/items',
+getUserStory: '/api/kanban/userstory',
+getUserStoryOrder: '/api/kanban/userstory-order',
+addColumn: '/api/kanban/add-column',
+editColumn: '/api/kanban/edit-column',
+updateColumnOrder: '/api/kanban/update-column-order',
+deleteColumn: '/api/kanban/delete-column',
+addItem: '/api/kanban/add-item',
+editItem: '/api/kanban/edit-item',
+updateColumnItemOrder: '/api/kanban/update-item-order',
+selectItem: '/api/kanban/select-item',
+addItemComment: '/api/kanban/add-item-comment',
+deleteItem: '/api/kanban/delete-item',
+addStory: '/api/kanban/add-story',
+editStory: '/api/kanban/edit-story',
+updateStoryOrder: '/api/kanban/update-story-order',
+updateStoryItemOrder: '/api/kanban/update-storyitem-order',
+addStoryComment: '/api/kanban/add-story-comment',
+deleteStory: '/api/kanban/delete-story',
+deleteItem: '/api/kanban/delete-item',
+
+};
+
+const initialState = {
+  error: null,
+  columns: [],
+  columnsOrder: [],
+  comments: [],
+  items: [],
+  profiles: [],
+  selectedItem: false,
+  userStory: [],
+  userStoryOrder: []
+};
+
+const slice = createSlice({
+  name: 'kanban',
+  initialState,
+  reducers: {
+    // HAS ERROR
+    hasError(state, action) {
+      state.error = action.payload;
+    },
+
+    // ADD COLUMN
+    addColumnSuccess(state, action) {
+      state.columns = action.payload.columns;
+      state.columnsOrder = action.payload.columnsOrder;
+    },
+
+    // EDIT COLUMN
+    editColumnSuccess(state, action) {
+      state.columns = action.payload.columns;
+    },
+
+    // UPDATE COLUMN ORDER
+    updateColumnOrderSuccess(state, action) {
+      state.columnsOrder = action.payload.columnsOrder;
+    },
+
+    // DELETE COLUMN
+    deleteColumnSuccess(state, action) {
+      state.columns = action.payload.columns;
+      state.columnsOrder = action.payload.columnsOrder;
+    },
+
+    // ADD ITEM
+    addItemSuccess(state, action) {
+      state.items = action.payload.items;
+      state.columns = action.payload.columns;
+      state.userStory = action.payload.userStory;
+    },
+
+    // EDIT ITEM
+    editItemSuccess(state, action) {
+      state.items = action.payload.items;
+      state.columns = action.payload.columns;
+      state.userStory = action.payload.userStory;
+    },
+
+    // UPDATE COLUMN ITEM ORDER
+    updateColumnItemOrderSuccess(state, action) {
+      state.columns = action.payload.columns;
+    },
+
+    // SELECT ITEM
+    selectItemSuccess(state, action) {
+      state.selectedItem = action.payload.selectedItem;
+    },
+
+    // ADD ITEM COMMENT
+    addItemCommentSuccess(state, action) {
+      state.items = action.payload.items;
+      state.comments = action.payload.comments;
+    },
+
+    // DELETE ITEM
+    deleteItemSuccess(state, action) {
+      state.items = action.payload.items;
+      state.columns = action.payload.columns;
+      state.userStory = action.payload.userStory;
+    },
+
+    // ADD STORY
+    addStorySuccess(state, action) {
+      state.userStory = action.payload.userStory;
+      state.userStoryOrder = action.payload.userStoryOrder;
+    },
+
+    // EDIT STORY
+    editStorySuccess(state, action) {
+      state.userStory = action.payload.userStory;
+    },
+
+    // UPDATE STORY ORDER
+    updateStoryOrderSuccess(state, action) {
+      state.userStoryOrder = action.payload.userStoryOrder;
+    },
+
+    // UPDATE STORY ITEM ORDER
+    updateStoryItemOrderSuccess(state, action) {
+      state.userStory = action.payload.userStory;
+    },
+
+    // ADD STORY COMMENT
+    addStoryCommentSuccess(state, action) {
+      state.userStory = action.payload.userStory;
+      state.comments = action.payload.comments;
+    },
+
+    // DELETE STORY
+    deleteStorySuccess(state, action) {
+      state.userStory = action.payload.userStory;
+      state.userStoryOrder = action.payload.userStoryOrder;
+    },
+
+    // GET COLUMNS
+    getColumnsSuccess(state, action) {
+      state.columns = action.payload;
+    },
+
+    // GET COLUMNS ORDER
+    getColumnsOrderSuccess(state, action) {
+      state.columnsOrder = action.payload;
+    },
+
+    // GET COMMENTS
+    getCommentsSuccess(state, action) {
+      state.comments = action.payload;
+    },
+
+    // GET PROFILES
+    getProfilesSuccess(state, action) {
+      state.profiles = action.payload;
+    },
+
+    // GET ITEMS
+    getItemsSuccess(state, action) {
+      state.items = action.payload;
+    },
+
+    // GET USER STORY
+    getUserStorySuccess(state, action) {
+      state.userStory = action.payload;
+    },
+
+    // GET USER STORY ORDER
+    getUserStoryOrderSuccess(state, action) {
+      state.userStoryOrder = action.payload;
+    }
+  }
+});
+
+// Reducer
+export default slice.reducer;
+
+// ----------------------------------------------------------------------
+
+export function getColumns() {
+  return async () => {
+    try {
+      const response = await axios.get(dataRoutes.getColumns);
+      dispatch(slice.actions.getColumnsSuccess(response.data.columns));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getColumnsOrder() {
+  return async () => {
+    try {
+      const response = await axios.get(dataRoutes.getColumnsOrder);
+      dispatch(slice.actions.getColumnsOrderSuccess(response.data.columnsOrder));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getComments() {
+  return async () => {
+    try {
+      const response = await axios.get(dataRoutes.getComments);
+      dispatch(slice.actions.getCommentsSuccess(response.data.comments));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getProfiles() {
+  return async () => {
+    try {
+      const response = await axios.get(dataRoutes.getProfiles);
+      dispatch(slice.actions.getProfilesSuccess(response.data.profiles));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getItems() {
+  return async () => {
+    try {
+      const response = await axios.get(dataRoutes.getItems);
+      dispatch(slice.actions.getItemsSuccess(response.data.items));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getUserStory() {
+  return async () => {
+    try {
+      const response = await axios.get(dataRoutes.getUserStory);
+      dispatch(slice.actions.getUserStorySuccess(response.data.userStory));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getUserStoryOrder() {
+  return async () => {
+    try {
+      const response = await axios.get(dataRoutes.getUserStoryOrder);
+      dispatch(slice.actions.getUserStoryOrderSuccess(response.data.userStoryOrder));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function addColumn(column, columns, columnsOrder) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.addColumn, { column, columns, columnsOrder });
+      dispatch(slice.actions.addColumnSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function editColumn(column, columns) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.editColumn, { column, columns });
+      dispatch(slice.actions.editColumnSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function updateColumnOrder(columnsOrder) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.updateColumnOrder, { columnsOrder });
+      dispatch(slice.actions.updateColumnOrderSuccess(response.data));
+
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function deleteColumn(columnId, columnsOrder, columns) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.deleteColumn, { columnId, columnsOrder, columns });
+      dispatch(slice.actions.deleteColumnSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function addItem(columnId, columns, item, items, storyId, userStory) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.addItem, { columnId, columns, item, items, storyId, userStory });
+      dispatch(slice.actions.addItemSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function editItem(columnId, columns, item, items, storyId, userStory) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.editItem, { items, item, userStory, storyId, columns, columnId });
+      dispatch(slice.actions.editItemSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function updateColumnItemOrder(columns) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.updateColumnItemOrder, { columns });
+      dispatch(slice.actions.updateColumnItemOrderSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function selectItem(selectedItem) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.selectItem, { selectedItem });
+      dispatch(slice.actions.selectItemSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function addItemComment(itemId, comment, items, comments) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.addItemComment, { items, itemId, comment, comments });
+      dispatch(slice.actions.addItemCommentSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function deleteItem(itemId, items, columns, userStory) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.deleteItem, { columns, itemId, userStory, items });
+      dispatch(slice.actions.deleteItemSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function addStory(story, userStory, userStoryOrder) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.addStory, { userStory, story, userStoryOrder });
+      dispatch(slice.actions.addStorySuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function editStory(story, userStory) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.editStory, { userStory, story });
+      dispatch(slice.actions.editStorySuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function updateStoryOrder(userStoryOrder) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.updateStoryOrder, { userStoryOrder });
+      dispatch(slice.actions.updateStoryOrderSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function updateStoryItemOrder(userStory) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.updateStoryItemOrder, { userStory });
+      dispatch(slice.actions.updateStoryItemOrderSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function addStoryComment(storyId, comment, comments, userStory) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.addStoryComment, { userStory, storyId, comment, comments });
+      dispatch(slice.actions.addStoryCommentSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function deleteStory(storyId, userStory, userStoryOrder) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.deleteStory, { userStory, storyId, userStoryOrder });
+      dispatch(slice.actions.deleteStorySuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
