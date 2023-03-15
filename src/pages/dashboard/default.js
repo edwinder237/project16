@@ -42,6 +42,7 @@ import SalesChart from 'sections/dashboard/SalesChart';
 import OrdersTable from 'sections/dashboard/default/OrdersTable';
 import Board from '../../sections/apps/kanban/Board'
 import {data as courses} from '../../mock/courses'
+import CourseDetails from '../course-details'
 
 
 // assets
@@ -251,8 +252,8 @@ const DashboardDefault = () => {
             </List>
           </MainCard>
           
-          <Board/>
           
+          <CourseDetails/>
           
 
         </Grid>

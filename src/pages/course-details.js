@@ -26,7 +26,7 @@ import ColumnTitle from 'sections/apps/kanban/Board/DndCourses/ColumnTitle'
 
 
 
-function courseDetails() {
+function CourseDetails() {
     const theme = useTheme();
     const dispatch = useDispatch();
 
@@ -50,4 +50,4 @@ const DndCoursesProps = DndProps(theme, CourseEdit, dndStyle,null, ColumnTitle)
   )
 }
 
-export default courseDetails
+export default CourseDetails
