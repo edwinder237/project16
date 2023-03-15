@@ -1,6 +1,6 @@
 import React from 'react';
 
-function DndProps(theme,dragComponent,DndStyles,titleComponent){
+function DndProps(theme,dragComponent,DndStyles,collapsed,titleComponent){
 
 
     const DndProps = {

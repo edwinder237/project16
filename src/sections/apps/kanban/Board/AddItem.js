@@ -22,7 +22,7 @@ const chance = new Chance();
 
 // ==============================|| KANBAN BOARD - ADD ITEM ||============================== //
 
-const AddItem = ({ columnId }) => {
+const AddItem = ({ columnId,shortName }) => {
   const dispatch = useDispatch();
 
   const [addTaskBox, setAddTaskBox] = useState(false);
@@ -57,7 +57,7 @@ const AddItem = ({ columnId }) => {
       dispatch(
         openSnackbar({
           open: true,
-          message: 'Task Added successfully',
+          message: `${shortName.shortName} Added successfully`,
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
           variant: 'alert',
           alert: {
@@ -93,7 +93,7 @@ const AddItem = ({ columnId }) => {
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
-                    placeholder="Add Task"
+                    placeholder={`Add ${shortName.shortName}`}
                     value={title}
                     onChange={handleTaskTitle}
                     sx={{
@@ -111,7 +111,7 @@ const AddItem = ({ columnId }) => {
                       }
                     }}
                     onKeyUp={handleAddTask}
-                    helperText={isTitle ? 'Task title is required.' : ''}
+                    helperText={isTitle ? `${shortName.shortName} title is required.`  : ''}
                     error={isTitle}
                   />
                 </Grid>
@@ -146,7 +146,7 @@ const AddItem = ({ columnId }) => {
       {!addTaskBox && (
         <Grid item xs={12}>
           <Button variant="dashed" color="secondary" fullWidth onClick={handleAddTaskChange}>
-            Add Task
+          Add {shortName.shortName}
           </Button>
         </Grid>
       )}

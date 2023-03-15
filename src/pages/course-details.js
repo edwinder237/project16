@@ -25,9 +25,11 @@ import {dndStyle} from 'sections/apps/kanban/Board/DndCourses/DndStyles'
 import ColumnTitle from 'sections/apps/kanban/Board/DndCourses/ColumnTitle'
 
 
+
 function courseDetails() {
     const theme = useTheme();
     const dispatch = useDispatch();
+
 
     useEffect(() => {
       dispatch(getItems());
@@ -42,7 +44,7 @@ function courseDetails() {
   
 
     //Dnd Props generation
-const DndCoursesProps = DndProps(theme, CourseEdit, dndStyle, ColumnTitle)
+const DndCoursesProps = DndProps(theme, CourseEdit, dndStyle,null, ColumnTitle)
   return (
     <DndApp props={DndCoursesProps}/>
   )

@@ -1,62 +1,32 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import {
-  Avatar,
-  Box,
-  Button,
-  List,
-  ListItemButton,
-  ListItemSecondaryAction,
-  IconButton as Ib,
-  ListItemText,
-  Menu,
-  MenuItem,
-  Stack
-} from '@mui/material';
+import { CardMedia, Link, Menu, MenuItem, Stack, Tooltip, Typography } from '@mui/material';
 
 // third-party
 import { Draggable } from 'react-beautiful-dnd';
 
 // project imports
-//import EditStory from '../Backlogs/EditStory';
+import EditStory from '../Backlogs/EditStory';
 import AlertItemDelete from './AlertItemDelete';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { useDispatch, useSelector } from 'store';
 import { selectItem, deleteItem } from 'store/reducers/kanban';
-import IconButton  from 'components/@extended/IconButton'
-//import IconSmallButton from 'components/@extended/IconSmallButton';
-import MainCard from 'components/MainCard';
+import IconButton from 'components/@extended/IconButton';
 
 // assets
-import { MoreOutlined,PlusCircleOutlined,DownOutlined } from '@ant-design/icons';
-import { lb } from 'date-fns/esm/locale';
-
-// avatar style
-const avatarSX = {
-  width: 36,
-  height: 36,
-  fontSize: '1rem'
-};
-
-// action style
-const actionSX = {
-  mt: 0,
-  ml: 0,
- 
-  alignSelf: 'flex-start',
-  transform: 'none'
-};
+import { ClusterOutlined, MoreOutlined } from '@ant-design/icons';
 
 // item drag wrapper
 const getDragWrapper = (isDragging, draggableStyle, theme, radius) => {
   const bgcolor = theme.palette.background.paper + 99;
   return {
     userSelect: 'none',
-    margin: `0 0 ${0}px 0`,
+    margin: `0 0 ${8}px 0`,
+    padding: 16,
+    border: '1px solid',
     borderColor: theme.palette.divider,
     backgroundColor: isDragging ? bgcolor : theme.palette.background.paper,
     borderRadius: radius,
@@ -64,17 +34,9 @@ const getDragWrapper = (isDragging, draggableStyle, theme, radius) => {
   };
 };
 
-
-
-
-
-
 // ==============================|| KANBAN BOARD - ITEMS ||============================== //
 
 const Items = ({ item, index }) => {
- 
-//const {modules} = item;
-
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -130,119 +92,38 @@ const Items = ({ item, index }) => {
   return (
     <>
       {item && (
-        <Draggable  key={item.id} draggableId={item.id} index={index}>
+        <Draggable key={item.id} draggableId={item.id} index={index}>
           {(provided, snapshot) => (
-            <div 
+            <div
               ref={provided.innerRef}
               {...provided.draggableProps}
               {...provided.dragHandleProps}
               style={getDragWrapper(snapshot.isDragging, provided.draggableProps.style, theme, `4px`)}
             >
               <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: itemStory ? -0.75 : 0 }}>
-              </Stack>
-
-          <MainCard sx={{ mt: 0 }} content={false}>
-            <List
-              component="nav"
-              sx={{
-                px: 0,
-                py: 0,
-                '& .MuiListItemButton-root': {
-                  py: 1.5,
-                  '& .MuiAvatar-root': avatarSX,
-                  '& .MuiListItemSecondaryAction-root': { ...actionSX, position: 'relative' }
-                }
+                <Typography
+                  onClick={() => handlerDetails(item.id)}
+                  variant="subtitle1"
+                  sx={{
+                    display: 'inline-block',
+                    width: 'calc(100% - 34px)',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    verticalAlign: 'middle',
+                    cursor: 'pointer',
+                    '&:hover': {
+                      textDecoration: 'underline'
+                    }
                   }}
                 >
+                  {item.title}
+                </Typography>
 
-                  <ListItemButton divider>
-
-
-                    <Box width={1} height={100} sx={{ display: "flex", flexDirection: "row" }}  >
-
-                      <Box id="container 1" bgcolor="" maxWidth="80px" minWidth="80px">
-                        <Box sx={{ display: "flex", alignItems: "flex-end", justifyContent: "center" }} width={1} height={0.5} >
-                          <Avatar
-                            sx={{
-                              color: 'primary',
-                              bgcolor: '#9254DE',
-                            }}
-                          >
-                            {item.sortorder}
-                          </Avatar>
-                        </Box>
-                        <Box sx={{ display: "flex", alignItems: "flex-end", justifyContent: "center" }} width={1} height={0.5} >
-                          <IconButton sx={{ fontSize: "0.6rem" }} component={DownOutlined} />
-                        </Box>
-                      </Box>
-
-                      <Box id="tile" minWidth="120px" width={1} maxWidth="170px" height={100} bgcolor="">
-                        <ListItemText primary={<Typography
-                          onClick={() => handlerDetails(item.id)}
-                          variant="subtitle1"
-                          sx={{
-                            display: 'inline-block',
-                            width: 'calc(100% - 34px)',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            verticalAlign: 'middle',
-                            cursor: 'pointer',
-                            '&:hover': {
-                              textDecoration: 'underline'
-                            }
-                          }}
-                        >{item.title}</Typography>}
-                          secondary={
-                            <React.Fragment>
-                              {item.description}
-                              <br />
-
-                              <Button size='small' variant="text" startIcon={<PlusCircleOutlined />}>
-                                Add activity
-                              </Button>
-                            </React.Fragment>
-                          } />
-
-                      </Box>
-
-
-                    </Box>
-
-                    <Box id="timming" minWidth={70} height={100} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }} bgcolor="">
-                      <Stack alignItems="center">
-                        <Typography variant="subtitle1" noWrap>
-                          {item.duration}
-                        </Typography>
-                        <Typography variant="h6" color="secondary" noWrap>
-                          min
-                        </Typography>
-                      </Stack>
-                    </Box>
-                    <Box id="button" width={.05} height={100} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }} bgcolor="">
-                      <IconButton size="small" color="secondary" onClick={handleClick} aria-controls="menu-comment" aria-haspopup="true">
-                        <MoreOutlined />
-                      </IconButton>
-                    </Box>
-
-
-                    
-
-
-
-                  
-
-
-
-
-                    <ListItemSecondaryAction>
-                    <Box sx={{display: "flex",alignItems: "flex-end",justifyContent:"center"}} width={1} height={1} bgcolor="yellow" >
-                    
-                    </Box>
-
-                    </ListItemSecondaryAction>
-
-                    <Menu
+                <IconButton size="small" color="secondary" onClick={handleClick} aria-controls="menu-comment" aria-haspopup="true">
+                  <MoreOutlined />
+                </IconButton>
+                <Menu
                   id="menu-comment"
                   anchorEl={anchorEl}
                   keepMounted
@@ -276,14 +157,31 @@ const Items = ({ item, index }) => {
                   </MenuItem>
                 </Menu>
                 <AlertItemDelete title={item.title} open={open} handleClose={handleModalClose} />
-                  </ListItemButton>
-
-             
-
-            </List>
-          </MainCard>
-
-             
+              </Stack>
+              {itemStory && (
+                <>
+                  <Stack direction="row" spacing={0.5} alignItems="center">
+                    <Tooltip title="User Story">
+                      <ClusterOutlined style={{ color: theme.palette.primary.dark, fontSize: '0.75rem' }} />
+                    </Tooltip>
+                    <Tooltip title={itemStory.title}>
+                      <Link
+                        variant="caption"
+                        color="primary.dark"
+                        underline="hover"
+                        onClick={editStory}
+                        sx={{ cursor: 'pointer', pt: 0.5 }}
+                      >
+                        User Story #{itemStory.id}
+                      </Link>
+                    </Tooltip>
+                  </Stack>
+                  <EditStory story={itemStory} open={openStoryDrawer} handleDrawerOpen={handleStoryDrawerOpen} />
+                </>
+              )}
+              {backProfile && (
+                <CardMedia component="img" image={backProfile} sx={{ width: '100%', borderRadius: 1, mt: 1.5 }} title="Slider5 image" />
+              )}
             </div>
           )}
         </Draggable>
