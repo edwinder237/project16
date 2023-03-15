@@ -1,8 +1,5 @@
 // material-ui
-import { Box,Grid, Tooltip } from '@mui/material';
-
-// material-ui
-import { useTheme } from '@mui/material/styles';
+import { Box } from '@mui/material';
 
 // third-party
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
@@ -14,52 +11,24 @@ import ItemDetails from './ItemDetails';
 import MainCard from 'components/MainCard';
 import { useDispatch, useSelector } from 'store';
 import { updateColumnOrder, updateColumnItemOrder } from 'store/reducers/kanban';
+import { width } from '@mui/system';
 
-
-
-
-
-const getDragWrapper = (isDraggingOver,styles) => ({
-  
-  p: styles.p,
-  px: styles.px,
-  bgcolor: styles.bgcolor,
-  display: styles.display,
-  overflow: styles.overflow
+const getDragWrapper = () => ({
+  p: 0,
+  px: 0,
+  bgcolor: '',
+  display: 'flex',
+  overflow: 'auto'
 });
-
-
-
-
-
-
-
 
 // ==============================|| KANBAN - BOARD ||============================== //
 
-const Board = ({childrenProps}) => {
-const {DndStyles,DndDragedComponent,info,collapsed,collapsedIndex,titleComponent:TitleComponent } = childrenProps.props;
-
-  const theme = useTheme();
-
-  // ==============================|| DND - Header ||============================== //
-
-  const containerTitle = (
-  <TitleComponent shortName={info.shortName} />
-  );
-
- 
-
-  
-
-
+const Board = () => {
   const dispatch = useDispatch();
 
   const { columns, columnsOrder } = useSelector((state) => state.kanban);
-  console.log(columns)
   // handle drag & drop
   const onDragEnd = (result) => {
-    
     let newColumn = [];
     const { source, destination, draggableId, type } = result;
 
@@ -141,26 +110,25 @@ const {DndStyles,DndDragedComponent,info,collapsed,collapsedIndex,titleComponent
 
     dispatch(updateColumnItemOrder(newColumn));
   };
+
   return (
-    <Box sx={{ display: 'flex' }}>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="columns" direction="horizontal" type="column">
+    <Box  sx={{  display: 'flex' }}>
+      <DragDropContext  onDragEnd={onDragEnd}>
+        <Droppable  droppableId="columns" direction="horizontal" type="column">
           {(provided, snapshot) => (
-            <MainCard
+            <MainCard 
               border={false}
               ref={provided.innerRef}
-              sx={{ bgcolor: 'transparent' }}
-              contentSX={getDragWrapper(snapshot.isDraggingOver,DndStyles.parentContainerStyle)}
+              sx={{ bgcolor: 'transparent', width: '100%'}}
+              contentSX={getDragWrapper(snapshot.isDraggingOver)}
               {...provided.droppableProps}
             >
-              
-              {columnsOrder && columnsOrder.map((columnId, index) => {
+              {columnsOrder.map((columnId, index) => {
                 const column = columns.filter((item) => item.id === columnId)[0];
-                
-                return  <Columns key={columnId} column={column} index={index} styles={DndStyles} collapsedIndex={collapsedIndex} title={containerTitle} info={info} collapsed={collapsed} dragComponent={DndDragedComponent} />;
+                return <Columns key={columnId} column={column} index={index} />;
               })}
               {provided.placeholder}
-            
+              
             </MainCard>
           )}
         </Droppable>
@@ -169,5 +137,5 @@ const {DndStyles,DndDragedComponent,info,collapsed,collapsedIndex,titleComponent
     </Box>
   );
 };
-//<AddColumn />
+
 export default Board;

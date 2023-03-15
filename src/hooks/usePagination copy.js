@@ -1,9 +1,10 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 // ==============================|| CARD - PAGINATION ||============================== //
 
 export default function usePagination(data, itemsPerPage) {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState < number > 1;
   const maxPage = Math.ceil(data.length / itemsPerPage);
 
   function currentData() {
@@ -27,3 +28,8 @@ export default function usePagination(data, itemsPerPage) {
 
   return { next, prev, jump, currentData, currentPage, maxPage };
 }
+
+usePagination.propTypes = {
+  data: PropTypes.array,
+  itemsPerPage: PropTypes.number
+};

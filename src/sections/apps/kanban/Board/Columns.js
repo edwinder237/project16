@@ -1,10 +1,9 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Grid, Tooltip } from '@mui/material';
+import { Grid } from '@mui/material';
 
 // third-party
 import { Droppable, Draggable } from 'react-beautiful-dnd';
@@ -13,48 +12,54 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import EditColumn from './EditColumn';
 import Items from './Items';
 import AddItem from './AddItem';
-import AlertColumnDelete from './AlertColumnDelete';
+//import AlertColumnDelete from './AlertColumnDelete';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { useDispatch, useSelector } from 'store';
 import { deleteColumn } from 'store/reducers/kanban';
-import IconButton from 'components/@extended/IconButton';
+//import IconButton from 'components/@extended/IconButton';
 
 // assets
-import { DeleteOutlined } from '@ant-design/icons';
-
+//import { DeleteOutlined } from '@ant-design/icons';
 
 // column drag wrapper
-const getDragWrapper = (isDragging, draggableStyle, customStyle) => {
- 
+const getDragWrapper = (isDragging, draggableStyle, theme, radius) => {
+  // const bgcolor = theme.palette.mode === 'dark' ? theme.palette.background.default : theme.palette.primary.lighter;
   return {
-    ...customStyle.containerStyle.dragWrapper,
+    minWidth: '100%',
+    borderRadius: radius,
+    userSelect: 'none',
+    margin: `0 ${0}px 0 0`,
+    height: '100%',
     ...draggableStyle
   };
 };
 
 // column drop wrapper
-const getDropWrapper = (isDraggingOver,customStyle) => {
-  const dropWrapper = customStyle.containerStyle.dropWrapper;
-  const bgcolor = dropWrapper.bgcolor;
-  const bgcolorDrop = dropWrapper.bgcolorDrop;
+const getDropWrapper = (isDraggingOver, theme, radius) => {
+  const bgcolor = theme.palette.mode === 'dark' ? theme.palette.background.default : theme.palette.secondary.lighter;
+  const bgcolorDrop = theme.palette.mode === 'dark' ? theme.palette.text.disabled : theme.palette.secondary.light + 65;
 
   return {
     background: isDraggingOver ? bgcolorDrop : bgcolor,
-...customStyle.containerStyle.dropWrapper
+    padding: '8px 16px 14px',
+    width: 'auto',
+    borderRadius: radius
   };
 };
 
 // ==============================|| KANBAN BOARD - COLUMN ||============================== //
 
-const Columns = ({ column, index,styles, title,dragComponent: DragComponent,info,collapsed,collapsedIndex }) => {
+const Columns = ({ column, index }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
   const { items, columns, columnsOrder } = useSelector((state) => state.kanban);
   const columnItems = column && column.itemIds.map((itemId) => items.filter((item) => item.id === itemId)[0]);
+
   const handleColumnDelete = () => {
     setOpen(true);
   };
+
   const [open, setOpen] = useState(false);
   const handleClose = (status) => {
     setOpen(false);
@@ -75,10 +80,6 @@ const Columns = ({ column, index,styles, title,dragComponent: DragComponent,info
     }
   };
 
-//console.log(columnItems[collapsedIndex])
-const selectedCourseIndex = 0
-
-if (!collapsed) {
   return (
     <>
       {column && (
@@ -88,25 +89,24 @@ if (!collapsed) {
               ref={provided.innerRef}
               {...provided.draggableProps}
               {...provided.dragHandleProps}
-              style={getDragWrapper(snapshot.isDragging, provided.draggableProps.style, styles)}
+              style={getDragWrapper(snapshot.isDragging, provided.draggableProps.style, theme, `4px`)}
             >
               <Droppable droppableId={column.id} type="item">
                 {(providedDrop, snapshotDrop) => (
                   <div
                     ref={providedDrop.innerRef}
                     {...providedDrop.droppableProps}
-                    style={getDropWrapper(snapshotDrop.isDraggingOver, styles)}
-
+                    style={getDropWrapper(snapshotDrop.isDraggingOver, theme, `4px`)}
                   >
-                    {title}
-                    
-
-                    {columnItems && columnItems.map((item, i) => (
-                      <DragComponent key={i} item={item} index={i} info={info} styles={styles} />
-                    ))}
-
+                    <Grid container alignItems="center" spacing={3}>
+                      <Grid item xs zeroMinWidth>
+                        <EditColumn column={column} />
+                      </Grid>
+     
+                    </Grid>
+                    {columnItems && columnItems.map((item, i) => <Items key={i} item={item} index={i} />)}
                     {providedDrop.placeholder}
-                    
+                    <AddItem columnId={column.id} />
                   </div>
                 )}
               </Droppable>
@@ -116,57 +116,6 @@ if (!collapsed) {
       )}
     </>
   );
-} else {
-  return (
-    <>
-      {column && (
-        <Draggable draggableId={column.id} index={index}>
-          {(provided, snapshot) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              style={getDragWrapper(snapshot.isDragging, provided.draggableProps.style, styles)}
-            >
-              <Droppable droppableId={column.id} type="item">
-                {(providedDrop, snapshotDrop) => (
-                  <div
-                    ref={providedDrop.innerRef}
-                    {...providedDrop.droppableProps}
-                    style={getDropWrapper(snapshotDrop.isDraggingOver, styles)}
-
-                  >
-                    {title}
-
-
-
-                    {
-                     columnItems && !columnItems[selectedCourseIndex].modules ?
-                        columnItems[collapsedIndex].modules.map((Module, i) => (
-
-                          <DragComponent key={i} item={Module} index={i} info={info}  styles={styles} />
-                        ))
-                        :
-                        columnItems[selectedCourseIndex].modules[collapsedIndex].activities.map((activities, i) => (
-
-                          <DragComponent key={i} item={activities} index={i} info={info}  styles={styles} />
-                        ))
-                    }
-
-                    {providedDrop.placeholder}
-                    <AddItem columnId={column.id} shortName={info} />
-                  </div>
-                )}
-              </Droppable>
-            </div>
-          )}
-        </Draggable>
-      )}
-    </>
-
-    
-  );
-}
 };
 
 Columns.propTypes = {
