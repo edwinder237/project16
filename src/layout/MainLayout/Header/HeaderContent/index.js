@@ -30,11 +30,11 @@ const HeaderContent = () => {
     <>
       {menuOrientation === LAYOUT_CONST.HORIZONTAL_LAYOUT && !downLG && <DrawerHeader open={true} />}
       {!downLG && <Search />}
-      {!downLG && megaMenu}
+     
       {downLG && <Box sx={{ width: '100%', ml: 1 }} />}
 
       <Notification />
-      <Message />
+      
       {!downLG && <Profile />}
       {downLG && <MobileSection />}
     </>
@@ -42,3 +42,5 @@ const HeaderContent = () => {
 };
 
 export default HeaderContent;
+
+//{!downLG && megaMenu} <Message />

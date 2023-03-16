@@ -19,14 +19,9 @@ import { updateColumnOrder, updateColumnItemOrder } from 'store/reducers/kanban'
 
 
 
-const getDragWrapper = (isDraggingOver,styles) => ({
-  
-  p: styles.p,
-  px: styles.px,
-  bgcolor: styles.bgcolor,
-  display: styles.display,
-  overflow: styles.overflow
-});
+const getDragWrapper = (isDraggingOver,styles) => {
+return {...styles}
+};
 
 
 
@@ -38,7 +33,7 @@ const getDragWrapper = (isDraggingOver,styles) => ({
 // ==============================|| KANBAN - BOARD ||============================== //
 
 const Board = ({childrenProps}) => {
-const {DndStyles,DndDragedComponent,info,collapsed,collapsedIndex,titleComponent:TitleComponent } = childrenProps.props;
+const {DndStyles,DndDragedComponent,info,collapsed,collapsedIndex,titleComponent:TitleComponent,courseIndex } = childrenProps.props;
 
   const theme = useTheme();
 
@@ -149,7 +144,7 @@ const {DndStyles,DndDragedComponent,info,collapsed,collapsedIndex,titleComponent
             <MainCard
               border={false}
               ref={provided.innerRef}
-              sx={{ bgcolor: 'transparent' }}
+              sx={{ bgcolor: 'transparent', width:DndStyles.parentContainerStyle.width }} //width: '100%' added to fix the width of the board
               contentSX={getDragWrapper(snapshot.isDraggingOver,DndStyles.parentContainerStyle)}
               {...provided.droppableProps}
             >
@@ -157,7 +152,7 @@ const {DndStyles,DndDragedComponent,info,collapsed,collapsedIndex,titleComponent
               {columnsOrder.map((columnId, index) => {
                 const column = columns.filter((item) => item.id === columnId)[0];
                 
-                return  <Columns key={columnId} column={column} index={index} styles={DndStyles} collapsedIndex={collapsedIndex} title={containerTitle} info={info} collapsed={collapsed} dragComponent={DndDragedComponent} />;
+                return  <Columns key={columnId} column={column} index={index} styles={DndStyles} collapsedIndex={collapsedIndex} title={containerTitle} info={info} collapsed={collapsed} dragComponent={DndDragedComponent} courseIndex={courseIndex} />;
               })}
               {provided.placeholder}
             

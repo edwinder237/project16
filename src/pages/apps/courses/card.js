@@ -157,7 +157,7 @@ const CustomerCardPage = () => {
     courses.map((data, index) => (
               <Slide key={index} direction="up" in={true} timeout={50}>
                 <Grid item xs={12} sm={6} lg={4}>
-                  <CustomerCard customer={data} />
+                  <CustomerCard customer={data} index={index} />
                 </Grid>
               </Slide>
             ))

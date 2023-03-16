@@ -2,7 +2,7 @@ import React from 'react'
 
 
 // material-ui
-import { Box,Grid, Tooltip } from '@mui/material';
+import { Box,Grid, Tooltip,Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 
@@ -28,7 +28,7 @@ function ColumnTitle({shortName}) {
       '& fieldset': { display: 'none' },
       '& input:focus + fieldset': { display: 'block' }
     }}>
-      {shortName}
+       <Typography variant="h5">Modules</Typography>
       </Box>
     </Grid>
     <Grid item sx={{ mb: 1.5 }}>

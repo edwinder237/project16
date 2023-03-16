@@ -3,7 +3,7 @@ import Board from '../sections/apps/kanban/Board/index';
 import React from 'react'
 
 function DndApp(props) {
-  //console.log(props)
+  console.log(props)
   return (
     <Board childrenProps={props} />
   )

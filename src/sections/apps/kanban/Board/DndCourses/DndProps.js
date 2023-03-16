@@ -1,9 +1,10 @@
 import React from 'react';
 
-function DndProps(theme,dragComponent,DndStyles,collapsed,titleComponent){
+function DndProps(theme,dragComponent,DndStyles,collapsed,titleComponent,courseIndex){
 
 
     const DndProps = {
+        courseIndex:courseIndex,
         titleComponent:titleComponent,
         collapsed:false,
         info:{

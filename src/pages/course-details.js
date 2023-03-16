@@ -17,36 +17,36 @@ import { useDispatch } from 'store';
 
 // Drag and drop components:
 import DndApp from 'utils/DndApp'
-import DndProps from 'sections/apps/kanban/Board/DndCourses/DndProps' 
+import DndProps from 'sections/apps/kanban/Board/DndCourses/DndProps'
 
 // passed as a prop to DndProps
-import {CourseEdit} from 'sections/apps/kanban/Board/DndCourses/CourseEdit'
-import {dndStyle} from 'sections/apps/kanban/Board/DndCourses/DndStyles'
+import { CourseEdit } from 'sections/apps/kanban/Board/DndCourses/CourseEdit'
+import { dndStyle } from 'sections/apps/kanban/Board/DndCourses/DndStyles'
 import ColumnTitle from 'sections/apps/kanban/Board/DndCourses/ColumnTitle'
 
 
 
-function CourseDetails() {
-    const theme = useTheme();
-    const dispatch = useDispatch();
+function CourseDetails({ courseIndex }) {
+  const theme = useTheme();
+  const dispatch = useDispatch();
 
 
-    useEffect(() => {
-      dispatch(getItems());
-      dispatch(getColumns());
-      dispatch(getColumnsOrder());
-      dispatch(getProfiles());
-      dispatch(getComments());
-      dispatch(getUserStory());
-      dispatch(getUserStoryOrder());
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-  
+  useEffect(() => {
+    dispatch(getItems());
+    dispatch(getColumns());
+    dispatch(getColumnsOrder());
+    dispatch(getProfiles());
+    dispatch(getComments());
+    dispatch(getUserStory());
+    dispatch(getUserStoryOrder());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    //Dnd Props generation
-const DndCoursesProps = DndProps(theme, CourseEdit, dndStyle,null, ColumnTitle)
+
+  //Dnd Props generation (theme,component,style,info,collapsed,collapsedIndex,titleComponent,mainIndex )
+  const DndCoursesProps = DndProps(theme, CourseEdit, dndStyle, null, ColumnTitle, courseIndex)
   return (
-    <DndApp props={DndCoursesProps}/>
+    <DndApp props={DndCoursesProps} />
   )
 }
 

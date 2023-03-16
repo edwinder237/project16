@@ -24,6 +24,14 @@ const DrawerHeader = ({ open }) => {
       theme={theme}
       open={open}
       sx={{
+
+
+        background: 'hsla(223, 95%, 15%, 1)',
+        background: 'linear-gradient(180deg, hsla(223, 95%, 15%, 1) 0%, hsla(217, 100%, 42%, 1) 100%)',
+        background: '-moz-linear-gradient(270deg, hsla(223, 95%, 15%, 1) 0%, hsla(217, 100%, 42%, 1) 100%)',
+        background: '-webkit-linear-gradient(180deg, hsla(223, 95%, 15%, 1) 0%, hsla(217, 100%, 42%, 1) 100%)',
+        filter: 'progid:DXImageTransform.Microsoft.gradient(startColorstr="#02174C", endColorstr="#0052D6", GradientType=1)',
+
         minHeight: isHorizontal ? 'unset' : '60px',
         width: isHorizontal ? { xs: '100%', lg: '424px' } : 'inherit',
         paddingTop: isHorizontal ? { xs: '10px', lg: '0' } : '8px',
@@ -32,6 +40,7 @@ const DrawerHeader = ({ open }) => {
       }}
     >
       <Logo isIcon={!open} sx={{ width: open ? 'auto' : 35, height: 35 }} />
+
     </DrawerHeaderStyled>
   );
 };

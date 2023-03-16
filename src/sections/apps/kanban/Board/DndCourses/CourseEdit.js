@@ -9,8 +9,6 @@ import {
   Button,
   List,
   ListItemButton,
-  ListItemSecondaryAction,
- 
   ListItemText,
   Menu,
   MenuItem,
@@ -45,6 +43,7 @@ import { Draggable } from 'react-beautiful-dnd';
 // assets
 import { MoreOutlined,PlusCircleOutlined,DownOutlined } from '@ant-design/icons';
 import { motion,AnimatePresence } from "framer-motion"
+import { bgcolor } from '@mui/system';
 
 // avatar style
 const avatarSX = {
@@ -65,6 +64,7 @@ const avatarSX = {
   // item drag wrapper
     const getDragWrapper = (isDragging, draggableStyle, theme, styles) => {
     const bgcolor = theme.palette.background.paper + 99;
+    
     return {
       ...styles.dragWrapper, // spread styles.dragWrapper object
       backgroundColor: isDragging ? styles.dragWrapper.isDragging : styles.dragWrapper.backgroundColor,
@@ -75,13 +75,12 @@ const avatarSX = {
 
 
 export const CourseEdit = ({item,index,info, styles}) => {
+  
 
     const theme = useTheme();
     const dispatch = useDispatch();
     const [collapsed, setCollapsed] = useState(false);
     const [rotate, setRotate] = useState(0);
-
-
 
     const backProfile = item && item.image && `/assets/images/profile/${item.image}`;
 
@@ -152,37 +151,41 @@ const DndNestedProps =  DndProps(theme,Activity,childStyle,collapsed,index,Colum
 return(
     <>
     <Draggable key={item.id} draggableId={item.id} index={index}>
-      
-    {(provided, snapshot) => (
-      <div
-        ref={provided.innerRef}
-        {...provided.draggableProps}
-        {...provided.dragHandleProps}
-        style={getDragWrapper(snapshot.isDragging, provided.draggableProps.style, theme,styles )}
-      >
-<MainCard sx={{ mt: 0 }} content={false}>
+
+      {(provided, snapshot) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          style={getDragWrapper(snapshot.isDragging, provided.draggableProps.style, theme, styles)}
+        >
+
+
+
+          <MainCard sx={{ mt: 0, bgcolor:"" }} content={false}>
             <List
               component="nav"
               sx={{
                 px: 0,
                 py: 0,
                 '& .MuiListItemButton-root': {
-                  py: 1.5,
+                  py: 0, // py: 1.5 default
+                  px: 0, //aaded to cut off the padding
                   '& .MuiAvatar-root': avatarSX,
                   '& .MuiListItemSecondaryAction-root': { ...actionSX, position: 'relative' }
                 }
-                  }}
-                >
+              }}
+            >
 
-                  <ListItemButton divider>
+              <ListItemButton divider>
 
 
-                    <Box width={1} height={100} sx={{ display: "flex", flexDirection: "row" }}  >
+                <Box width={1} height={100} sx={{ pt:0, bgcolor:"", display: "flex", flexDirection: "row" }}  >
 
-                      <Box id="container 1" bgcolor="" maxWidth="80px" minWidth="80px">
-                        <Box sx={{ display: "flex", alignItems: "flex-end", justifyContent: "center" }} width={1} height={0.5} >
-                          <Avatar
-                            sx={{
+                  <Box id="container 1" bgcolor="" maxWidth="80px" minWidth="80px">
+                    <Box sx={{ bgcolor:"", display: "flex", alignItems: "flex-end", justifyContent: "center" }} width={1} height={0.5} >
+                      <Avatar
+                        sx={{
                               color: 'primary',
                               bgcolor: '#9254DE',
                             }}
@@ -190,14 +193,14 @@ return(
                             {item.sortorder}
                           </Avatar>
                         </Box>
-                        <Box sx={{ display: "flex", alignItems: "flex-end", justifyContent: "center" }} width={1} height={0.5} >
+                        <Box sx={{ bgcolor:"", pb:1, display: "flex", alignItems: "flex-end", justifyContent: "center" }} width={1} height={0.5} >
                         <motion.div className="box" animate={{rotate }} transition={{  type: "tween", duration: 0.5}}>
                           {item.hasChildren ? <IconButton sx={{ fontSize: "0.6rem" }} onClick={handleCollapse} component={DownOutlined}/> : null }
                           </motion.div >
                         </Box>
                       </Box>
 
-                      <Box id="tile" minWidth="120px" width={1} maxWidth="170px" height={100} bgcolor="">
+                      <Box id="tile" pt="2px" minWidth="120px" width={1} maxWidth="100%" height={100} bgcolor="">
                         <ListItemText primary={<Typography
                           onClick={() => handlerDetails(item.id)}
                           variant="subtitle1"
@@ -233,9 +236,9 @@ return(
                   </Box>
 
 
-                </Box>
+               
 
-                <Box id="timming" minWidth={70} height={100} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }} bgcolor="">
+                <Box id="timming" minWidth={70} height={100} sx={{ display: "flex", alignItems: "center", justifyContent: "center", bgcolor:"",}} bgcolor="">
                   <Stack alignItems="center">
                         <Typography variant="subtitle1" noWrap>
                           {item.duration}
@@ -245,12 +248,12 @@ return(
                         </Typography>
                       </Stack>
                     </Box>
-                    <Box id="button" width={.05} height={100} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }} bgcolor="">
+                    <Box id="button" paddingRight="20px" minWidth={35}  height={100} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }} bgcolor="">
                       <IconButton size="small" color="secondary" onClick={handleClick} aria-controls="menu-comment" aria-haspopup="true">
                         <MoreOutlined />
                       </IconButton>
                     </Box>
-
+                    </Box>
               
 
                     <Menu

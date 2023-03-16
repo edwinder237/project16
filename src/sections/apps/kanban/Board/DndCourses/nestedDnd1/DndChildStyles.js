@@ -24,7 +24,7 @@ export const dndStyle = () => {
             dropWrapper: {
                 bgcolor: theme.palette.mode === 'dark' ? theme.palette.background.default : theme.palette.secondary.lighter,
                 bgcolorDrop: theme.palette.mode === 'dark' ? theme.palette.text.disabled : theme.palette.secondary.light + 65,
-                padding: '8px 16px 14px',
+                padding: '8px 0px 14px',
                 width: 'auto',
                 borderRadius: `4px`
             }

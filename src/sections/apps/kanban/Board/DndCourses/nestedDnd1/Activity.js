@@ -151,7 +151,6 @@ return(
         {...provided.dragHandleProps}
         style={getDragWrapper(snapshot.isDragging, provided.draggableProps.style, theme, `4px`)}
       >
-    
 <MainCard sx={{ mt: 0 }} content={false}>
             <List
               component="nav"
@@ -187,7 +186,7 @@ return(
                         </Box>
                       </Box>
 
-                      <Box id="tile" minWidth="120px" width={1} maxWidth="170px" height={100} bgcolor="">
+                      <Box id="tile" minWidth="120px" width={1} maxWidth="100%" height={100} bgcolor="">
                         <ListItemText primary={<Typography
                           onClick={() => handlerDetails(item.id)}
                           variant="subtitle1"
@@ -218,7 +217,7 @@ return(
                       </Box>
 
 
-                    </Box>
+                    
 
                     <Box id="timming" minWidth={70} height={100} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }} bgcolor="">
                       <Stack alignItems="center">
@@ -230,18 +229,13 @@ return(
                         </Typography>
                       </Stack>
                     </Box>
-                    <Box id="button" width={.05} height={100} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }} bgcolor="">
+                    <Box id="button" paddingRight="20px" minWidth={35}  height={100} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }} bgcolor="">
                       <IconButton size="small" color="secondary" onClick="" aria-controls="menu-comment" aria-haspopup="true">
                         <MoreOutlined />
                       </IconButton>
                     </Box>
-
-                    <ListItemSecondaryAction>
-                    <Box sx={{display: "flex",alignItems: "flex-end",justifyContent:"center"}} width={1} height={1} bgcolor="yellow" >
-                    
                     </Box>
 
-                    </ListItemSecondaryAction>
 
                     <Menu
                   id="menu-comment"

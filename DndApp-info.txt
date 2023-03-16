@@ -6,10 +6,10 @@ npm i react-dropzone --save --legacy-peer-dep
 npm i react-beautiful-dnd --save --legacy-peer-dep
 npm i redux-persist --save --legacy-peer-dep
 
-pages/api/kanban
+pages/api/kanban 
 store/reducers/kanban
 store/index
-sections/apps/kanban/Board/
+sections/apps/kanban/Board/(need to update from seed version)
 components/third-party/dropzone/MultiFile
 utils/getDropzoneData
 utils/DndApp

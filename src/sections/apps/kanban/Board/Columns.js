@@ -34,7 +34,7 @@ const getDragWrapper = (isDragging, draggableStyle, customStyle) => {
 
 // column drop wrapper
 const getDropWrapper = (isDraggingOver,customStyle) => {
-  const dropWrapper = customStyle.containerStyle.dropWrapper;
+  const {dropWrapper} = customStyle.containerStyle;
   const bgcolor = dropWrapper.bgcolor;
   const bgcolorDrop = dropWrapper.bgcolorDrop;
 
@@ -46,10 +46,9 @@ const getDropWrapper = (isDraggingOver,customStyle) => {
 
 // ==============================|| KANBAN BOARD - COLUMN ||============================== //
 
-const Columns = ({ column, index,styles, title,dragComponent: DragComponent,info,collapsed,collapsedIndex }) => {
+const Columns = ({ column, index,styles, title,dragComponent: DragComponent,info,collapsed,collapsedIndex,courseIndex }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
-
   const { items, columns, columnsOrder } = useSelector((state) => state.kanban);
  // console.log(items)
   const columnItems = column && column.itemIds.map((itemId) => items.filter((item) => item.id === itemId)[0]);
@@ -76,8 +75,6 @@ const Columns = ({ column, index,styles, title,dragComponent: DragComponent,info
     }
   };
 
-//console.log(columnItems[collapsedIndex])
-const selectedCourseIndex = 0
 
 if (!collapsed && items.length > 0) {
   return (
@@ -102,7 +99,7 @@ if (!collapsed && items.length > 0) {
                     {title}
                     
 
-                    {columnItems && columnItems.map((item, i) => (
+                    {columnItems && columnItems[courseIndex].modules.map((item, i) => (
                       <DragComponent key={i} item={item} index={i} info={info} styles={styles} />
                     ))}
 
@@ -142,13 +139,13 @@ if (!collapsed && items.length > 0) {
 
 
                     {
-                     columnItems && !columnItems[selectedCourseIndex].modules ?
+                     columnItems && !columnItems[courseIndex].modules ?
                         columnItems[collapsedIndex].modules.map((Module, i) => (
 
                           <DragComponent key={i} item={Module} index={i} info={info}  styles={styles} />
                         ))
                         :
-                        columnItems[selectedCourseIndex].modules[collapsedIndex].activities.map((activities, i) => (
+                        columnItems[courseIndex].modules[collapsedIndex].activities.map((activities, i) => (
 
                           <DragComponent key={i} item={activities} index={i} info={info}  styles={styles} />
                         ))

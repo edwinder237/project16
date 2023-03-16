@@ -13,7 +13,7 @@ import IconButton from 'components/@extended/IconButton';
 import { LAYOUT_CONST } from 'config';
 
 // assets
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { MenuFoldOutlined, MenuUnfoldOutlined ,ArrowRightOutlined, ArrowLeftOutlined,} from '@ant-design/icons';
 
 // ==============================|| MAIN LAYOUT - HEADER ||============================== //
 
@@ -42,7 +42,7 @@ const Header = ({ open, handleDrawerToggle }) => {
           variant="light"
           sx={{ color: 'text.primary', bgcolor: open ? iconBackColorOpen : iconBackColor, ml: { xs: 0, lg: -2 } }}
         >
-          {!open ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          {!open ? <ArrowRightOutlined /> :<ArrowLeftOutlined /> }
         </IconButton>
       ) : null}
       {headerContent}

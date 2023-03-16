@@ -45,7 +45,7 @@ import { EnvironmentOutlined, LinkOutlined, MailOutlined, MoreOutlined, PhoneOut
 
 // ==============================|| CUSTOMER - CARD ||============================== //
 
-const CustomerCard = ({ customer }) => {
+const CustomerCard = ({ customer,index }) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -126,7 +126,7 @@ const CustomerCard = ({ customer }) => {
           <Box sx={{ width: 1, m: 'auto' }}>
           <CardMedia
                 sx={{ cursor: 'pointer', height: 130, textDecoration: 'none', opacity:  1  }}
-                image="https://i.postimg.cc/sfMSbbC2/edwind.jpg"
+                image="https://f.hubspotusercontent30.net/hubfs/3277184/employee%20training%20and%20development.png"
               />
 </Box>
 
@@ -158,13 +158,15 @@ const CustomerCard = ({ customer }) => {
                     </AvatarGroup>
                   </Stack>
                   <Stack>
-                    <NextLink href={`/apps/e-commerce/product-details/${customer.id}`} passHref>
+                  <NextLink href={`/dashboard/${index}`} passHref>
+                    
                       <Typography
                         color="textPrimary"
                         variant="h5"
                         sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block', cursor: 'pointer' }}
                       >
                         {customer.name}
+                      
                       </Typography>
                     </NextLink>
                     <Typography variant="h6" color="textSecondary">
