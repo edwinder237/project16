@@ -11,10 +11,6 @@ import Layout from 'layout';
 import Page from 'components/Page';
 
 
-
-//fake data for course details page
-//import { data } from '../mock/courses'
-
 // ==============================|| SAMPLE PAGE ||============================== //
 
 

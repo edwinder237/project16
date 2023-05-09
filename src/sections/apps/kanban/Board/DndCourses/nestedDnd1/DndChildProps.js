@@ -1,6 +1,6 @@
 import React from 'react';
 
-function DndProps(theme,dragComponent,DndStyles,collapsed,index,titleComponent){
+function DndProps(theme,dragComponent,DndStyles,collapsed,titleComponent,courseIndex,items, columns){
 
 const Collapsed = collapsed === true ? true : false;
 
@@ -8,7 +8,7 @@ const Collapsed = collapsed === true ? true : false;
         title:false,
         titleComponent:titleComponent,
         collapsed:Collapsed,
-        collapsedIndex:index,
+        collapsedIndex:courseIndex,
 
         info:{
             pageName: "DndProps",
@@ -27,7 +27,9 @@ const Collapsed = collapsed === true ? true : false;
     
         DndParentFunctions: {},
     
-        DndApiRoutes: {}
+        DndApiRoutes: {},
+        items:items,
+        columns:columns
     
     };
 

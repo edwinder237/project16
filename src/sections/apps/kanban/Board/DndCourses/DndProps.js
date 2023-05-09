@@ -1,6 +1,6 @@
 import React from 'react';
 
-function DndProps(theme,dragComponent,DndStyles,collapsed,titleComponent,courseIndex){
+function DndProps(theme,dragComponent,DndStyles,collapsed,titleComponent,courseIndex,items, columns){
 
 
     const DndProps = {
@@ -9,8 +9,8 @@ function DndProps(theme,dragComponent,DndStyles,collapsed,titleComponent,courseI
         collapsed:false,
         info:{
             pageName: "DndProps",
-            shortName: "Course",
-            childShortName: "Module"
+            shortName: "Module",
+            childShortName: "Activity"
         },
     
         DndColumnTitles:[
@@ -24,7 +24,9 @@ function DndProps(theme,dragComponent,DndStyles,collapsed,titleComponent,courseI
     
         DndParentFunctions: {},
     
-        DndApiRoutes: {}
+        DndApiRoutes: {},
+        items: items,
+        columns: columns
     
     };
 

@@ -5,34 +5,38 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'utils/axios';
 import { dispatch } from '../index';
 
+
 const dataRoutes = {
 
-getColumns: '/api/kanban/columns',
-getItems: '/api/kanban/items',
-getColumnsOrder: '/api/kanban/columns-order',
+  getColumns: '/api/kanban/columns',
+  getNestedColumns: '/api/kanban/nested-columns',
+  getNestedColumns2: '/api/kanban/nested-columns2',
 
-getComments: '/api/kanban/comments',
-getProfiles: '/api/kanban/profiles',
-getItems: '/api/kanban/items',
-getUserStory: '/api/kanban/userstory',
-getUserStoryOrder: '/api/kanban/userstory-order',
-addColumn: '/api/kanban/add-column',
-editColumn: '/api/kanban/edit-column',
-updateColumnOrder: '/api/kanban/update-column-order',
-deleteColumn: '/api/kanban/delete-column',
-addItem: '/api/kanban/add-item',
-editItem: '/api/kanban/edit-item',
-updateColumnItemOrder: '/api/kanban/update-item-order',
-selectItem: '/api/kanban/select-item',
-addItemComment: '/api/kanban/add-item-comment',
-deleteItem: '/api/kanban/delete-item',
-addStory: '/api/kanban/add-story',
-editStory: '/api/kanban/edit-story',
-updateStoryOrder: '/api/kanban/update-story-order',
-updateStoryItemOrder: '/api/kanban/update-storyitem-order',
-addStoryComment: '/api/kanban/add-story-comment',
-deleteStory: '/api/kanban/delete-story',
-deleteItem: '/api/kanban/delete-item',
+  getItems: '/api/kanban/items',
+  getColumnsOrder: '/api/kanban/columns-order',
+
+  getComments: '/api/kanban/comments',
+  getProfiles: '/api/kanban/profiles',
+  getItems: '/api/kanban/items',
+  getUserStory: '/api/kanban/userstory',
+  getUserStoryOrder: '/api/kanban/userstory-order',
+  addColumn: '/api/kanban/add-column',
+  editColumn: '/api/kanban/edit-column',
+  updateColumnOrder: '/api/kanban/update-column-order',
+  deleteColumn: '/api/kanban/delete-column',
+  addItem: '/api/kanban/add-item',
+  editItem: '/api/kanban/edit-item',
+  updateColumnItemOrder: '/api/kanban/update-item-order',
+  selectItem: '/api/kanban/select-item',
+  addItemComment: '/api/kanban/add-item-comment',
+  deleteItem: '/api/kanban/delete-item',
+  addStory: '/api/kanban/add-story',
+  editStory: '/api/kanban/edit-story',
+  updateStoryOrder: '/api/kanban/update-story-order',
+  updateStoryItemOrder: '/api/kanban/update-storyitem-order',
+  addStoryComment: '/api/kanban/add-story-comment',
+  deleteStory: '/api/kanban/delete-story',
+  deleteItem: '/api/kanban/delete-item',
 
 };
 
@@ -45,7 +49,11 @@ const initialState = {
   profiles: [],
   selectedItem: false,
   userStory: [],
-  userStoryOrder: []
+  userStoryOrder: [],
+  nestedColumns: [],
+  nestedColums2: [],
+  modules: [],
+  activities: [],
 };
 
 const slice = createSlice({
@@ -84,6 +92,8 @@ const slice = createSlice({
       state.items = action.payload.items;
       state.columns = action.payload.columns;
       state.userStory = action.payload.userStory;
+      //console.log(action)
+      state.modules = action.payload.modules;
     },
 
     // EDIT ITEM
@@ -95,7 +105,9 @@ const slice = createSlice({
 
     // UPDATE COLUMN ITEM ORDER
     updateColumnItemOrderSuccess(state, action) {
-      state.columns = action.payload.columns;
+      console.log(action.payload)
+      //state.columns = action.payload.columns;
+      state.nestedColumns = action.payload.columns;
     },
 
     // SELECT ITEM
@@ -114,6 +126,7 @@ const slice = createSlice({
       state.items = action.payload.items;
       state.columns = action.payload.columns;
       state.userStory = action.payload.userStory;
+      state.modules = action.payload.modules;
     },
 
     // ADD STORY
@@ -154,6 +167,16 @@ const slice = createSlice({
       state.columns = action.payload;
     },
 
+    // GET NESTED COLUMN ORDER
+    getNestedColumnsSuccess(state, action) {
+      state.nestedColumns = action.payload;
+    },
+
+    // GET NESTED COLUMN 2 ORDER
+    getNestedColumnsSuccess2(state, action) {
+      state.nestedColumns2 = action.payload;
+    },
+
     // GET COLUMNS ORDER
     getColumnsOrderSuccess(state, action) {
       state.columnsOrder = action.payload;
@@ -172,6 +195,13 @@ const slice = createSlice({
     // GET ITEMS
     getItemsSuccess(state, action) {
       state.items = action.payload;
+
+    },
+
+    // GET Modules
+    getModulesSuccess(state, action) {
+      state.modules = action.payload;
+      state.activities = action.payload.activities;
     },
 
     // GET USER STORY
@@ -196,6 +226,29 @@ export function getColumns() {
     try {
       const response = await axios.get(dataRoutes.getColumns);
       dispatch(slice.actions.getColumnsSuccess(response.data.columns));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getNestedColumns(courseIndex) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.getNestedColumns, { courseIndex });
+      // console.log(response.data.columns)
+      dispatch(slice.actions.getNestedColumnsSuccess(response.data.columns));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+export function getNestedColumns2(courseIndex) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.getNestedColumns2, { courseIndex });
+      // console.log(response.data.columns)
+      dispatch(slice.actions.getNestedColumnsSuccess2(response.data.columns));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -235,11 +288,23 @@ export function getProfiles() {
   };
 }
 
-export function getItems() {
+
+export function getDndItems(query, stateKey, stateIndex, storedState) {
+  return async () => {
+    try {
+      const response = await axios.get(query);
+      dispatch(slice.actions.getModulesSuccess(response.data[stateKey][stateIndex][storedState]))
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getItems(state, i, child) {
   return async () => {
     try {
       const response = await axios.get(dataRoutes.getItems);
-      dispatch(slice.actions.getItemsSuccess(response.data.items));
+      dispatch(slice.actions.getItemsSuccess(response.data.items))
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

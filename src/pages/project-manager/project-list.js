@@ -1,4 +1,4 @@
-import Link from 'next/link'
+
 
 // material-ui
 import { Typography,List, ListItem,IconButton,MoreOutlined,ListItemAvatar,ListItemText } from '@mui/material';
@@ -7,10 +7,10 @@ import { Typography,List, ListItem,IconButton,MoreOutlined,ListItemAvatar,ListIt
 import Layout from 'layout';
 import Page from 'components/Page';
 
-import CustomerCardPage from './apps/courses/card'
+import CustomerCardPage from './card'
 
 //fake data for course details page
-import { data } from '../mock/courses'
+import { data } from '../../mock/courses'
 
 // ==============================|| SAMPLE PAGE ||============================== //
 

@@ -1,3 +1,7 @@
+import CardContent from 'themes/overrides/CardContent';
+import { v4 as uuidv4 } from 'uuid';
+
+
 export const data = [
     {
       id: '11',
@@ -23,7 +27,8 @@ export const data = [
               uuid: "72b7ca52-a283-11ed-828b-7054d2174593",
               summary: "will be awesome",
               duration: 8,
-              sortorder: 1
+              sortorder: 1,
+              category: 'practical' 
             },
             {
               id: '7',
@@ -31,7 +36,8 @@ export const data = [
               uuid: "72b7cf00-a283-11ed-828b-7054d2174593",
               summary: "will be awesome",
               duration: 9,
-              sortorder: 1
+              sortorder: 1,
+              category: 'practical' 
             },
             {
               id: '8',
@@ -39,7 +45,8 @@ export const data = [
               uuid: "72b7d33c-a283-11ed-828b-7054d2174593",
               summary: "will be awesome",
               duration: 15,
-              sortorder: 1
+              sortorder: 1,
+              category: 'passive' 
             },
             {
               id: '9',
@@ -47,7 +54,8 @@ export const data = [
               uuid: "72b7d77e-a283-11ed-828b-7054d2174593",
               summary: "will be awesome",
               duration: 2,
-              sortorder: 1
+              sortorder: 1,
+              category: 'passive' 
             },
             {
               id: '10',
@@ -55,13 +63,14 @@ export const data = [
               uuid: "72b7da8b-a283-11ed-828b-7054d2174593",
               summary: "will be awesome",
               duration: 4,
-              sortorder: 1
+              sortorder: 1,
+              category: 'quiz' 
             }
           ],
           hasChildren: true
         },
         {
-          id: 2,
+          id: '2',
           name: "how to do it",
           uuid: "43efbc2d-a283-11ed-828b-7054d2174593",
           summary: "a lot of fun",
@@ -69,20 +78,22 @@ export const data = [
           sortorder: 1.2,
           activities: [
             {
-              id: 1,
+              id: '1',
               name: "jump",
               uuid: "72b7669b-a283-11ed-828b-7054d2174593",
               summary: "will be awesome",
               duration: 5,
-              sortorder: 1
+              sortorder: 1,
+              category: 'quiz' 
             },
             {
-              id: 2,
+              id: '2',
               name: "do stuff",
               uuid: "72b7908a-a283-11ed-828b-7054d2174593",
               summary: "will be awesome",
               duration: 10,
-              sortorder: 1
+              sortorder: 1,
+              category: 'passive' 
             }
           ],
           hasChildren: true
@@ -111,7 +122,8 @@ export const data = [
               uuid: "72b793ed-a283-11ed-828b-7054d2174593",
               summary: "will be awesome",
               duration: 12,
-              sortorder: 1
+              sortorder: 1,
+              category: 'practical' 
             },
             {
               id: '4',
@@ -119,7 +131,8 @@ export const data = [
               uuid: "72b7b351-a283-11ed-828b-7054d2174593",
               summary: "will be awesome",
               duration: 5,
-              sortorder: 1
+              sortorder: 1,
+              category: 'practical' 
             },
             {
               id: '5',
@@ -127,7 +140,8 @@ export const data = [
               uuid: "72b7b64b-a283-11ed-828b-7054d2174593",
               summary: "will be awesome",
               duration: 7,
-              sortorder: 1
+              sortorder: 1,
+              category: 'quiz' 
             }
           ],
           hasChildren: true

@@ -43,7 +43,7 @@ const validationSchema = yup.object({
 
 const EditItem = ({ item, profiles, userStory, columns, handleDrawerOpen }) => {
   const dispatch = useDispatch();
-  const { items } = useSelector((state) => state.kanban);
+  const { items,modules } = useSelector((state) => state.kanban);
   const itemUserStory = userStory.filter((story) => story.itemIds.filter((itemId) => itemId === item.id)[0])[0];
   const itemColumn = columns.filter((column) => column.itemIds.filter((itemId) => itemId === item.id)[0])[0];
 
@@ -75,7 +75,8 @@ const EditItem = ({ item, profiles, userStory, columns, handleDrawerOpen }) => {
         image: values.image,
         attachments: values.files
       };
-      dispatch(editItem(values.columnId, columns, itemToEdit, items, values.storyId, userStory));
+      //dispatch(editItem(values.columnId, columns, itemToEdit, items, values.storyId, userStory));
+        dispatch(editItem(values.columnId, columns, itemToEdit, modules, values.storyId, userStory));
       dispatch(
         openSnackbar({
           open: true,

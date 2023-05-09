@@ -45,7 +45,7 @@ import { EnvironmentOutlined, LinkOutlined, MailOutlined, MoreOutlined, PhoneOut
 
 // ==============================|| CUSTOMER - CARD ||============================== //
 
-const CustomerCard = ({ customer,index }) => {
+const CustomerCard = ({ course, customer, index }) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -79,13 +79,15 @@ const CustomerCard = ({ customer,index }) => {
   return (
     <>
 
-      <MainCard sx={{ height: 1,'&:hover': {
-              transform: 'scale3d(1.02, 1.02, 1)',
-              transition: 'all .4s ease-in-out'
-            }, '& .MuiCardContent-root': { height: 1, display: 'flex', flexDirection: 'column', bgcolor:"" } }}>
+      <MainCard sx={{
+        height: 1, '&:hover': {
+          transform: 'scale3d(1.02, 1.02, 1)',
+          transition: 'all .4s ease-in-out'
+        }, '& .MuiCardContent-root': { height: 1, display: 'flex', flexDirection: 'column', bgcolor: "" }
+      }}>
         <Grid bgcolor="" width="110%" id="print" container spacing={2.25}  >
           <Grid item xs={12}>
-            <List  sx={{ width: 1, p: 0 }}>
+            <List sx={{ width: 1, p: 0 }}>
               <ListItem
                 disablePadding
                 secondaryAction={
@@ -124,13 +126,13 @@ const CustomerCard = ({ customer,index }) => {
             <Divider />
           </Grid>
           <Box sx={{ width: 1, m: 'auto' }}>
-          <CardMedia
-                sx={{ cursor: 'pointer', height: 130, textDecoration: 'none', opacity:  1  }}
-                image="https://f.hubspotusercontent30.net/hubfs/3277184/employee%20training%20and%20development.png"
-              />
-</Box>
+            <CardMedia
+              sx={{ cursor: 'pointer', height: 130, textDecoration: 'none', opacity: 1 }}
+              image="https://f.hubspotusercontent30.net/hubfs/3277184/employee%20training%20and%20development.png"
+            />
+          </Box>
 
-<CardContent sx={{ p: 2 }}>
+          <CardContent sx={{ p: 2 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Stack spacing="10px">
@@ -158,19 +160,19 @@ const CustomerCard = ({ customer,index }) => {
                     </AvatarGroup>
                   </Stack>
                   <Stack>
-                  <NextLink href={`/dashboard/${index}`} passHref>
-                    
+                    <NextLink href={`/dashboard/${index}`} passHref>
+
                       <Typography
                         color="textPrimary"
                         variant="h5"
                         sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block', cursor: 'pointer' }}
                       >
-                        {customer.name}
-                      
+                        {course.title}
+
                       </Typography>
                     </NextLink>
                     <Typography variant="h6" color="textSecondary">
-                    {customer.summary}
+                      {customer.description}
                     </Typography>
                   </Stack>
 
@@ -192,12 +194,20 @@ const CustomerCard = ({ customer,index }) => {
           sx={{ mt: 'auto', mb: 0, pt: 2.25 }}
         >
           <Typography variant="caption" color="secondary">
-          Created: Nov 25th 2023
+            Created: Nov 25th 2023
           </Typography>
-
+          <Stack direction="row" spacing={1}>
           <Button variant="outlined" size="small" onClick={handleClickOpen}>
             Preview
           </Button>
+
+          <NextLink href={`/dashboard/${index}`} passHref>
+            <Button variant="contained" size="small" >
+              Open
+            </Button>
+          </NextLink>
+          </Stack>
+
         </Stack>
       </MainCard>
 
@@ -212,12 +222,12 @@ const CustomerCard = ({ customer,index }) => {
       >
         <AddCustomer customer={customer} onCancel={handleAdd} />
       </Dialog>
-      
+      <CustomerPreview course={course} customer={customer} open={open} onClose={handleClose} />
       <AlertCustomerDelete title={customer.id} open={openAlert} handleClose={handleAlertClose} />
     </>
   );
 };
-//<CustomerPreview customer={customer} open={open} onClose={handleClose} />
+
 CustomerCard.propTypes = {
   customer: PropTypes.object
 };

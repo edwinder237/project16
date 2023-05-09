@@ -1,4 +1,6 @@
 import { useMemo, useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'store';
+import { getItems } from 'store/reducers/kanban';
 
 // material-ui
 import {
@@ -15,6 +17,7 @@ import {
   Pagination,
   Typography
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 // project import
 import Layout from 'layout';
@@ -24,6 +27,7 @@ import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 import CustomerCard from 'sections/apps/customer/CustomerCard';
 import AddCustomer from 'sections/apps/customer/AddCustomer';
 
+
 import makeData from 'data/react-table';
 import { GlobalFilter } from 'utils/react-table';
 import usePagination from 'hooks/usePagination';
@@ -31,7 +35,8 @@ import usePagination from 'hooks/usePagination';
 // assets
 import { PlusOutlined } from '@ant-design/icons';
 
-import {data as courses} from '../../../mock/courses'
+import { data as courses } from '../../mock/courses'
+import Items from 'sections/apps/kanban/Backlogs/Items';
 
 // ==============================|| CUSTOMER - CARD ||============================== //
 
@@ -66,7 +71,30 @@ const allColumns = [
   }
 ];
 
+const CustomButton = styled(Button)(({
+
+  background: 'hsla(223, 95%, 15%, 1)',
+  background: 'linear-gradient(180deg, hsla(223, 95%, 15%, 1) 0%, hsla(217, 100%, 42%, 1) 100%)',
+  background: '-moz-linear-gradient(270deg, hsla(223, 95%, 15%, 1) 0%, hsla(217, 100%, 42%, 1) 100%)',
+  background: '-webkit-linear-gradient(180deg, hsla(223, 95%, 15%, 1) 0%, hsla(217, 100%, 42%, 1) 100%)',
+  filter: 'progid:DXImageTransform.Microsoft.gradient(startColorstr="#02174C", endColorstr="#0052D6", GradientType=1)',
+
+}))
+
 const CustomerCardPage = () => {
+
+  useEffect(() => {
+    dispatch(getItems());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const dispatch = useDispatch();
+
+  const { items } = useSelector((state) => state.kanban);
+
+
+
+
   const data = useMemo(() => makeData(6), []);
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
@@ -143,24 +171,24 @@ const CustomerCardPage = () => {
                   })}
                 </Select>
               </FormControl>
-              <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
-                Add Customer
-              </Button>
+              <CustomButton variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
+                Add Course
+              </CustomButton>
             </Stack>
           </Stack>
         </Stack>
       </Box>
       <Grid container spacing={3}>
         {courses.length > 0 ? (
-    
 
-    courses.map((data, index) => (
-              <Slide key={index} direction="up" in={true} timeout={50}>
-                <Grid item xs={12} sm={6} lg={4}>
-                  <CustomerCard customer={data} index={index} />
-                </Grid>
-              </Slide>
-            ))
+
+          items.map((data, index) => (
+            <Slide key={index} direction="up" in={true} timeout={50}>
+              <Grid item xs={12} sm={6} lg={4}>
+                <CustomerCard course={items[index]} customer={data} index={index} />
+              </Grid>
+            </Slide>
+          ))
         ) : (
           <EmptyUserCard title={'You have not created any courses yet.'} />
         )}

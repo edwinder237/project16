@@ -46,11 +46,12 @@ const getDropWrapper = (isDraggingOver,customStyle) => {
 
 // ==============================|| KANBAN BOARD - COLUMN ||============================== //
 
-const Columns = ({ column, index,styles, title,dragComponent: DragComponent,info,collapsed,collapsedIndex,courseIndex,items ,columns }) => {
+const Columns = ({ column, index,styles, title,dragComponent: DragComponent,info,collapsed,collapsedIndex,courseIndex }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const {   columnsOrder } = useSelector((state) => state.kanban);
-  const columnItems = column && items? column.itemIds.map((itemId) => items.filter((item) => item.id === itemId)[0]):null;
+  const { items, columns, columnsOrder } = useSelector((state) => state.kanban);
+  //console.log(courseIndex)
+  const columnItems = column && column.itemIds.map((itemId) => items.filter((item) => item.id === itemId)[0]);
   const handleColumnDelete = () => {
     setOpen(true);
   };
@@ -74,11 +75,11 @@ const Columns = ({ column, index,styles, title,dragComponent: DragComponent,info
     }
   };
 
-console.log(column && column.id)
-if (column) {
+
+if (!collapsed && items.length > 0) {
   return (
     <>
-      
+      {column &&  (
         <Draggable draggableId={column.id} index={index}>
           {(provided, snapshot) => (
             <div
@@ -87,7 +88,7 @@ if (column) {
               {...provided.dragHandleProps}
               style={getDragWrapper(snapshot.isDragging, provided.draggableProps.style, styles)}
             >
-              <Droppable droppableId={column.id} type="div">
+              <Droppable droppableId={column.id} type="item">
                 {(providedDrop, snapshotDrop) => (
                   <div
                     ref={providedDrop.innerRef}
@@ -98,9 +99,9 @@ if (column) {
                     {title}
                     
 
-                    {columnItems ?
-                    columnItems.map((item, i) => (
-                      <DragComponent key={item.id} item={item} index={i} info={info} styles={styles} />
+                    {columnItems && columnItems[courseIndex].modules  ?
+                    columnItems[courseIndex].modules.map((item, i) => (
+                      <DragComponent key={i} item={item} index={i} info={info} styles={styles} />
                     ))
                     :
                     
@@ -115,10 +116,55 @@ if (column) {
             </div>
           )}
         </Draggable>
-  
+      )
+      }
     </>
   );
+} if( collapsed && items.length > 0 ) {
+  return (
+    <>
+      {column &&  (
+        <Draggable draggableId={column.id} index={index}>
+          {(provided, snapshot) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              style={getDragWrapper(snapshot.isDragging, provided.draggableProps.style, styles)}
+            >
+              <Droppable droppableId={column.id} type="item">
+                {(providedDrop, snapshotDrop) => (
+                  <div
+                    ref={providedDrop.innerRef}
+                    {...providedDrop.droppableProps}
+                    style={getDropWrapper(snapshotDrop.isDraggingOver, styles)}
 
+                  >
+                    {title}
+
+
+
+                    {
+
+                        columnItems[courseIndex].modules[collapsedIndex].activities.map((activities, i) => (
+
+                          <DragComponent key={i} item={activities} index={i} info={info}  styles={styles} />
+                        ))
+                    }
+
+                    {providedDrop.placeholder}
+                    <AddItem columnId={column.id} shortName={info} />
+                  </div>
+                )}
+              </Droppable>
+            </div>
+          )}
+        </Draggable>
+      )}
+    </>
+
+    
+  );
 }else return <Box sx={{ display: 'flex' }}><CircularProgress/></Box>;
 };
 

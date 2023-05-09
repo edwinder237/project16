@@ -23,7 +23,7 @@ import {
 } from '@mui/material';
 
 // third-party
-import NumberFormat from 'react-number-format';
+import { PatternFormat } from 'react-number-format';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 
 // project import
@@ -41,7 +41,9 @@ import { DeleteOutlined, DownloadOutlined, EditOutlined } from '@ant-design/icon
 
 // ==============================|| CUSTOMER - CARD PREVIEW ||============================== //
 
-export default function CustomerPreview({ customer, open, onClose }) {
+
+export default function CustomerPreview({course, customer, open, onClose }) {
+  
   const matchDownMD = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const [openAlert, setOpenAlert] = useState(false);
 
@@ -73,7 +75,7 @@ export default function CustomerPreview({ customer, open, onClose }) {
                 secondaryAction={
                   <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
                     <Tooltip title="Export">
-                      <PDFDownloadLink document={<ListCard customer={customer} />} fileName={`Customer-${customer.fatherName}.pdf`}>
+                      <PDFDownloadLink document={<ListCard customer={customer} />} fileName={`Customer-${course.title}.pdf`}>
                         <IconButton color="secondary">
                           <DownloadOutlined />
                         </IconButton>
@@ -100,8 +102,8 @@ export default function CustomerPreview({ customer, open, onClose }) {
                   />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={<Typography variant="h5">{customer.fatherName}</Typography>}
-                  secondary={<Typography color="secondary">{customer.role}</Typography>}
+                  primary={<Typography variant="h5">{course.title}</Typography>}
+                  secondary={<Typography color="secondary">{course.description}</Typography>}
                 />
               </ListItem>
             </List>
@@ -247,7 +249,8 @@ export default function CustomerPreview({ customer, open, onClose }) {
                       <Stack spacing={0.5}>
                         <Typography color="secondary">Contact</Typography>
                         <Typography>
-                          <NumberFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={customer.contact} />
+                          <PatternFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={5147064615} />
+                          
                         </Typography>
                       </Stack>
                       <Stack spacing={0.5}>

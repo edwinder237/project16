@@ -16,6 +16,7 @@ import componentsOverride from './overrides';
 
 export default function ThemeCustomization({ children }) {
   const { themeDirection, mode, presetColor, fontFamily } = useConfig();
+ 
 
   const theme = useMemo(() => Palette(mode, presetColor), [mode, presetColor]);
 

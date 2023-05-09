@@ -16,24 +16,16 @@ import { useDispatch, useSelector } from 'store';
 import { updateColumnOrder, updateColumnItemOrder } from 'store/reducers/kanban';
 
 
-
-
-
 const getDragWrapper = (isDraggingOver,styles) => {
 return {...styles}
 };
 
 
 
-
-
-
-
-
 // ==============================|| KANBAN - BOARD ||============================== //
 
 const Board = ({childrenProps}) => {
-const {DndStyles,DndDragedComponent,info,collapsed,collapsedIndex,titleComponent:TitleComponent,courseIndex } = childrenProps.props;
+const {DndStyles,DndDragedComponent,info,collapsed,collapsedIndex,titleComponent:TitleComponent,courseIndex,items, columns } = childrenProps.props;
 
   const theme = useTheme();
 
@@ -43,14 +35,9 @@ const {DndStyles,DndDragedComponent,info,collapsed,collapsedIndex,titleComponent
   <TitleComponent shortName={info.shortName} />
   );
 
- 
-
-  
-
-
   const dispatch = useDispatch();
 
-  const { columns, columnsOrder } = useSelector((state) => state.kanban);
+  const {  columnsOrder } = useSelector((state) => state.kanban);
   // handle drag & drop
   const onDragEnd = (result) => {
     
@@ -121,7 +108,6 @@ const {DndStyles,DndDragedComponent,info,collapsed,collapsedIndex,titleComponent
         ...destinationColumn,
         itemIds: newDestinationItemIds
       };
-
       newColumn = columns.map((column) => {
         if (column.id === newSourceColumn.id) {
           return newSourceColumn;
@@ -135,7 +121,13 @@ const {DndStyles,DndDragedComponent,info,collapsed,collapsedIndex,titleComponent
 
     dispatch(updateColumnItemOrder(newColumn));
   };
- 
+
+
+const columnPush = columns && columns[0]
+const columnPushId = columnPush && columnPush.id
+
+//console.log(columnPush.id )
+
   return (
     <Box sx={{ display: 'flex' }}>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -152,7 +144,8 @@ const {DndStyles,DndDragedComponent,info,collapsed,collapsedIndex,titleComponent
               {columnsOrder.map((columnId, index) => {
                 const column = columns.filter((item) => item.id === columnId)[0];
                 
-                return  <Columns key={columnId} column={column} index={index} styles={DndStyles} collapsedIndex={collapsedIndex} title={containerTitle} info={info} collapsed={collapsed} dragComponent={DndDragedComponent} courseIndex={courseIndex} />;
+                
+                return  <Columns key={index} column={columnPush } items={items} index={index} styles={DndStyles} collapsedIndex={collapsedIndex} title={containerTitle} info={info} collapsed={collapsed} dragComponent={DndDragedComponent} courseIndex={courseIndex} />;
               })}
               {provided.placeholder}
             

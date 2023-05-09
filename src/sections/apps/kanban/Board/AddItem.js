@@ -26,7 +26,7 @@ const AddItem = ({ columnId,shortName }) => {
   const dispatch = useDispatch();
 
   const [addTaskBox, setAddTaskBox] = useState(false);
-  const { columns, items, userStory } = useSelector((state) => state.kanban);
+  const { columns, items, userStory,modules } = useSelector((state) => state.kanban);
   const handleAddTaskChange = () => {
     setAddTaskBox((prev) => !prev);
   };
@@ -52,8 +52,8 @@ const AddItem = ({ columnId,shortName }) => {
         priority: 'low',
         attachments: []
       };
-
-      dispatch(addItem(columnId, columns, newItem, items, '0', userStory));
+    //dispatch(addItem(columnId, columns, newItem, items, '0', userStory,modules));
+      dispatch(addItem(columnId, columns, newItem, modules, '0', userStory,));
       dispatch(
         openSnackbar({
           open: true,

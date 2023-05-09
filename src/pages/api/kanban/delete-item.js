@@ -24,7 +24,8 @@ export default function handler(req, res) {
   const result = {
     items,
     columns: newColumn,
-    userStory: newUserStory
+    userStory: newUserStory,
+    modules: items
   };
 
   return res.status(200).json({ ...result });

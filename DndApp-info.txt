@@ -91,6 +91,16 @@ const DndCoursesProps = DndProps(theme, CourseEdit, dndStyle, ColumnTitle)
 
 export default courseDetails
 
+//lib 
+
+<DndApp
+
+ component 
+
+
+
+/>
+
 
 
 

@@ -1,6 +1,24 @@
+const projects = [
+  {
+    id: '11',
+    sortorder: 2,
+    name: "Kick-off meeting",
+    summary: "a lot of fun",
+    duration: 142,
+    section_id: null,
+    uuid: "0e141fae-a283-11ed-828b-7054d2174593",
+    hasChildren: 1,
+    child:null,
+  }
+
+
+];
+
+
+
 export const data = [
     {
-      id: 11,
+      id: '11',
       sortorder: 2,
       name: "Kick-off meeting",
       summary: "a lot of fun",
@@ -10,15 +28,15 @@ export const data = [
       hasChildren: 1,
       modules: [
         {
-          id: 1,
+          id: '1',
           name: "introduction",
           uuid: "43efb55c-a283-11ed-828b-7054d2174593",
-          summary: "a lot of fun",
+          summary: "Really fun",
           duration: 5,
           sortorder: 1.1,
           activities: [
             {
-              id: 6,
+              id: '6',
               name: "lecture",
               uuid: "72b7ca52-a283-11ed-828b-7054d2174593",
               summary: "will be awesome",
@@ -26,7 +44,7 @@ export const data = [
               sortorder: 1
             },
             {
-              id: 7,
+              id: '7',
               name: "video",
               uuid: "72b7cf00-a283-11ed-828b-7054d2174593",
               summary: "will be awesome",
@@ -34,7 +52,7 @@ export const data = [
               sortorder: 1
             },
             {
-              id: 8,
+              id: '8',
               name: "sleep",
               uuid: "72b7d33c-a283-11ed-828b-7054d2174593",
               summary: "will be awesome",
@@ -42,7 +60,7 @@ export const data = [
               sortorder: 1
             },
             {
-              id: 9,
+              id: '9',
               name: "snap",
               uuid: "72b7d77e-a283-11ed-828b-7054d2174593",
               summary: "will be awesome",
@@ -50,7 +68,7 @@ export const data = [
               sortorder: 1
             },
             {
-              id: 10,
+              id: '10',
               name: "sleep",
               uuid: "72b7da8b-a283-11ed-828b-7054d2174593",
               summary: "will be awesome",
@@ -64,7 +82,7 @@ export const data = [
           id: 2,
           name: "how to do it",
           uuid: "43efbc2d-a283-11ed-828b-7054d2174593",
-          summary: "This is me trying to do something cool",
+          summary: "a lot of fun",
           duration: 1,
           sortorder: 1.2,
           activities: [
@@ -88,7 +106,7 @@ export const data = [
           hasChildren: true
         },
         {
-          id: 3,
+          id: '3',
           name: "groupe section",
           uuid: "43efbe31-a283-11ed-828b-7054d2174593",
           summary: "a lot of fun",
@@ -98,7 +116,7 @@ export const data = [
           hasChildren: false
         },
         {
-          id: 4,
+          id: '4',
           name: "the pwoer of selling",
           uuid: "43efc0ca-a283-11ed-828b-7054d2174593",
           summary: "a lot of fun",
@@ -106,7 +124,7 @@ export const data = [
           sortorder: 1.4,
           activities: [
             {
-              id: 3,
+              id: '3',
               name: "quiz",
               uuid: "72b793ed-a283-11ed-828b-7054d2174593",
               summary: "will be awesome",
@@ -114,7 +132,7 @@ export const data = [
               sortorder: 1
             },
             {
-              id: 4,
+              id: '4',
               name: "lecture",
               uuid: "72b7b351-a283-11ed-828b-7054d2174593",
               summary: "will be awesome",
@@ -122,7 +140,7 @@ export const data = [
               sortorder: 1
             },
             {
-              id: 5,
+              id: '5',
               name: "play",
               uuid: "72b7b64b-a283-11ed-828b-7054d2174593",
               summary: "will be awesome",
@@ -133,7 +151,7 @@ export const data = [
           hasChildren: true
         },
         {
-          id: 5,
+          id: '5',
           name: "lets face it",
           uuid: "43efc4b1-a283-11ed-828b-7054d2174593",
           summary: "a lot of fun",
@@ -143,7 +161,7 @@ export const data = [
           hasChildren: false
         },
         {
-          id: 6,
+          id: '6',
           name: "the end",
           uuid: "43efc6d9-a283-11ed-828b-7054d2174593",
           summary: "a lot of fun",
@@ -155,17 +173,17 @@ export const data = [
       ]
     },
     {
-      id: 12,
+      id: '12',
       sortorder: 3,
-      name: "Sales rep training 1 (CRM)",
-      summary: "this is the coolest thing ever for real!! :)",
+      name: "ales rep training 1 (CRM)",
+      summary: "a lot of fun",
       duration: 54,
       section_id: null,
       uuid: "0e14511c-a283-11ed-828b-7054d2174593",
       hasChildren: 1,
       modules: [
         {
-          id: 7,
+          id: '7',
           name: "2nd intro",
           uuid: "43efc894-a283-11ed-828b-7054d2174593",
           summary: "this is strange",
@@ -175,7 +193,7 @@ export const data = [
           hasChildren: false
         },
         {
-          id: 8,
+          id: '8',
           name: "life is good",
           uuid: "43efca3c-a283-11ed-828b-7054d2174593",
           summary: "this is strange",
@@ -185,7 +203,7 @@ export const data = [
           hasChildren: false
         },
         {
-          id: 9,
+          id: '9',
           name: "ok ok",
           uuid: "43efcc3b-a283-11ed-828b-7054d2174593",
           summary: "this is strange",
@@ -195,7 +213,7 @@ export const data = [
           hasChildren: false
         },
         {
-          id: 10,
+          id: '10',
           name: "my car is cool",
           uuid: "43efcdf0-a283-11ed-828b-7054d2174593",
           summary: "this is strange",
@@ -205,7 +223,7 @@ export const data = [
           hasChildren: false
         },
         {
-          id: 11,
+          id: '11',
           name: "if only",
           uuid: "43efcff1-a283-11ed-828b-7054d2174593",
           summary: "this is strange",
@@ -215,7 +233,7 @@ export const data = [
           hasChildren: false
         },
         {
-          id: 12,
+          id: '12',
           name: "you could read",
           uuid: "43efd19a-a283-11ed-828b-7054d2174593",
           summary: "this is strange",
@@ -225,7 +243,7 @@ export const data = [
           hasChildren: false
         },
         {
-          id: 13,
+          id: '13',
           name: "jeez",
           uuid: "43efd33d-a283-11ed-828b-7054d2174593",
           summary: "this is strange",
@@ -235,7 +253,7 @@ export const data = [
           hasChildren: false
         },
         {
-          id: 14,
+          id: '14',
           name: "whats wrong?",
           uuid: "43efd4df-a283-11ed-828b-7054d2174593",
           summary: "this is strange",
@@ -247,7 +265,7 @@ export const data = [
       ]
     },
     {
-      id: 13,
+      id: '13',
       sortorder: 4,
       name: "Sales rep training 2 (Desking)",
       summary: "a lot of fun",
@@ -258,7 +276,7 @@ export const data = [
       modules: null
     },
     {
-      id: 14,
+      id: '14',
       sortorder: 5,
       name: "Sales rep training 3 (Desking)",
       summary: "a lot of fun",
@@ -269,7 +287,7 @@ export const data = [
       modules: null
     },
     {
-      id: 15,
+      id: '15',
       sortorder: 6,
       name: "Sales rep training 4 (CRM)",
       summary: "a lot of fun",
@@ -280,7 +298,7 @@ export const data = [
       modules: null
     },
     {
-      id: 16,
+      id: '16',
       sortorder: 7,
       name: "Sales Manager training 1 (CRM)",
       summary: "a lot of fun",
@@ -291,7 +309,7 @@ export const data = [
       modules: null
     },
     {
-      id: 17,
+      id:'17',
       sortorder: 8,
       name: "Sales Manager training 2 (DESKING)",
       summary: "a lot of fun",
@@ -302,7 +320,7 @@ export const data = [
       modules: null
     },
     {
-      id: 46,
+      id: '46',
       sortorder: 9,
       name: "Other transansaction types",
       summary: "Desking training ",
@@ -313,3 +331,4 @@ export const data = [
       modules: null
     }
   ]
+  

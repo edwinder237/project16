@@ -69,7 +69,7 @@ const MainCard = forwardRef(
             '& .MuiCardContent-root': {
               overflowY: 'auto',
               minHeight: 'auto',
-              maxHeight: `calc(100vh - 200px)`
+              maxHeight: `calc(100vh - 200px)`,
             }
           }),
           ...sx

@@ -20,14 +20,25 @@ const columnIdsData = {
   column2: 'column-2',
   column3: 'column-3'
 };
-const columnsData = [
-  {
-    id: columnIdsData.column1,
-    title: 'New',
-    itemIds: getModules(data)
-  },
 
-];
-export default function handler(req, res) {
+export default async function handler(req, res) {
+  const {courseIndex} = req.body;
+
+    const modules = await data[courseIndex].modules
+    let returnArray = []
+    modules.forEach((module) => {
+        returnArray.push(module.id)
+    })
+
+
+  const columnsData = [
+    {
+      id: columnIdsData.column1,
+      title: 'New',
+      itemIds: returnArray
+    },
+  
+  ];
+
   return res.status(200).json({ columns: columnsData });
 }

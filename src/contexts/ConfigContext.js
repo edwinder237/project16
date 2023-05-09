@@ -24,6 +24,7 @@ const ConfigContext = createContext(initialState);
 
 function ConfigProvider({ children }) {
   const [config, setConfig] = useLocalStorage('mantis-react-next-ts-config', initialState);
+  //console.log(initialState)
 
   const onChangeContainer = () => {
     setConfig({
