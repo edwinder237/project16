@@ -8,6 +8,11 @@ import { dispatch } from '../index';
 
 const dataRoutes = {
 
+  // projects
+  
+  addGroup: '/api/kanban/add-group',
+  getGroups: '/api/kanban/groups',
+////
   getColumns: '/api/kanban/columns',
   getNestedColumns: '/api/kanban/nested-columns',
   getNestedColumns2: '/api/kanban/nested-columns2',
@@ -38,6 +43,9 @@ const dataRoutes = {
   deleteStory: '/api/kanban/delete-story',
   deleteItem: '/api/kanban/delete-item',
 
+  // project-manager routes
+  getProjects: '/api/kanban/fakeProjects',
+  getEvents: '/api/kanban/fakeEvents'
 };
 
 const initialState = {
@@ -54,12 +62,31 @@ const initialState = {
   nestedColums2: [],
   modules: [],
   activities: [],
+
+  // project-manager
+  projects:[],
+  events:[],
+  groups:[],
 };
 
 const slice = createSlice({
   name: 'kanban',
   initialState,
   reducers: {
+    //PROJECTS
+
+        // ADD GROUP
+        addGroupSuccess(state, action) {
+          state.groups = action.payload.newGroupsArray;
+          console.log(state.groups);
+        },
+        getGroups(state, action) {
+          state.groups = action.payload.groups;
+        },
+
+
+
+
     // HAS ERROR
     hasError(state, action) {
       state.error = action.payload;
@@ -105,7 +132,7 @@ const slice = createSlice({
 
     // UPDATE COLUMN ITEM ORDER
     updateColumnItemOrderSuccess(state, action) {
-      console.log(action.payload)
+      //console.log(action.payload)
       //state.columns = action.payload.columns;
       state.nestedColumns = action.payload.columns;
     },
@@ -191,11 +218,20 @@ const slice = createSlice({
     getProfilesSuccess(state, action) {
       state.profiles = action.payload;
     },
-
+// Project-manager stuff///
     // GET ITEMS
     getItemsSuccess(state, action) {
       state.items = action.payload;
 
+    },
+
+    // GET PROJECTS
+    getProjectsSuccess(state, action) {
+      state.projects = action.payload;
+    },
+       // GET EVENTS
+    getEventsSuccess(state, action) {
+      state.events = action.payload;
     },
 
     // GET Modules
@@ -218,6 +254,32 @@ const slice = createSlice({
 
 // Reducer
 export default slice.reducer;
+
+// projects 
+
+export function getGroups(groups) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.getGroups,{groups});
+      dispatch(slice.actions.getGroups(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function addGroup(newGroup,groups) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.addGroup, {newGroup,groups});
+      dispatch(slice.actions.addGroupSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+
 
 // ----------------------------------------------------------------------
 
@@ -305,6 +367,30 @@ export function getItems(state, i, child) {
     try {
       const response = await axios.get(dataRoutes.getItems);
       dispatch(slice.actions.getItemsSuccess(response.data.items))
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+// project-manager 
+//export function getProjects(state, i, child) {
+ // return async () => {
+  //  try {
+   //   const response = await axios.get(dataRoutes.getProjects);
+      //console.log(response.data);
+   //   dispatch(slice.actions.getProjectsSuccess(response.data.projects))
+   // } catch (error) {
+   //   dispatch(slice.actions.hasError(error));
+   // }
+  //};
+//}
+
+export function getEvents(state, i, child) {
+  return async () => {
+    try {
+      const response = await axios.get(dataRoutes.getEvents);
+      //console.log(response.data);
+      dispatch(slice.actions.getEventsSuccess(response.data.events))
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

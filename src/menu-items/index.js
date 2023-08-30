@@ -4,6 +4,7 @@ import pages from './pages'; //demo page
 
 import Courses from './courses';
 import Projects from './projects';
+//import applications from './applications';
 
 // ==============================|| MENU ITEMS ||============================== //
 
@@ -12,3 +13,4 @@ const menuItems = {
 };
 
 export default menuItems;
+

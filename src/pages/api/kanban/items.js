@@ -38,8 +38,8 @@ const itemsData = data.map((item, index) => ({
     priority: 'low',
     title: item.name,
     hasChildren:item.hasChildren,
-    modules: item.modules && item.modules
-  
+    modules: item.modules && item.modules,
+    
 }));
 export default function handler(req, res) {
   return res.status(200).json({ items: itemsData });

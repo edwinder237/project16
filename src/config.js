@@ -1,12 +1,19 @@
 // ==============================|| THEME CONSTANT ||============================== //
 
+export const drawerWidth = 260;
+
 export const twitterColor = '#1DA1F2';
 export const facebookColor = '#3b5998';
 export const linkedInColor = '#0e76a8';
 
-export const APP_DEFAULT_PATH = '/course-manager/course-list';
+export const APP_DEFAULT_PATH = '/projects';
 export const HORIZONTAL_MAX_ITEM = 6;
 export const DRAWER_WIDTH = 260;
+
+export const ThemeMode = {
+  LIGHT: 'light',
+  DARK: 'dark'
+};
 
 export const LAYOUT_CONST = {
   VERTICAL_LAYOUT: 'vertical',
@@ -66,7 +73,7 @@ const config = {
    * 'light' (default)
    * 'dark'
    */
-  mode: 'light',
+  mode: ThemeMode.DARK,
 
   /**
    * the props used for theme primary color variants

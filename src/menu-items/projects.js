@@ -10,18 +10,26 @@ const icons = { DollarOutlined, LoginOutlined, PhoneOutlined, RocketOutlined, Un
 // ==============================|| MENU ITEMS - PAGES ||============================== //
 
 const Courses = {
-  id: 'group-pages',
+  id: 'Project Manager',
   title: <FormattedMessage id="Project Manager" />,
   type: 'group',
   children: [
     {
-      id: 'list',
+      id: 'Projects',
       title: <FormattedMessage id="Projects" />,
       type: 'item',
-      url: '/project-manager/project-list',
+      url: '/projects',
       icon: icons.CalendarOutlined,
       target: false
     },
+    {
+      id: 'calendar',
+      title: <FormattedMessage id="calendar" />,
+      type: 'item',
+      url: '/apps/calendar',
+      icon: icons.CalendarOutlined
+    },
+   
    
   ]
 };

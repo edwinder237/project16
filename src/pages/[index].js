@@ -6,7 +6,7 @@ function post() {
   const { index } = router.query
   
   return (
-    <div>heheh</div>
+    <div>page don't exist</div>
   )
 }
 

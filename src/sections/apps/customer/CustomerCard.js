@@ -45,7 +45,7 @@ import { EnvironmentOutlined, LinkOutlined, MailOutlined, MoreOutlined, PhoneOut
 
 // ==============================|| CUSTOMER - CARD ||============================== //
 
-const CustomerCard = ({ course, customer, index }) => {
+const CustomerCard = ({ course, customer, projectIndex }) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -96,7 +96,11 @@ const CustomerCard = ({ course, customer, index }) => {
                   </IconButton>
                 }
               >
-                <Chip variant="light" color="success" size="small" label="live" />
+                {course.status ==='active' &&  <Chip variant="light" color="success" size="small" label={course.status} />}
+                {course.status ==='completed' &&  <Chip variant="light" color="default" size="small" label={course.status} />}
+                {course.status ==='pending' &&  <Chip variant="light" color="warning" size="small" label={course.status} />}
+                {course.status ==='cancelled' &&  <Chip variant="light" color="error" size="small" label={course.status} />}
+               
               </ListItem>
             </List>
             <Menu
@@ -160,7 +164,7 @@ const CustomerCard = ({ course, customer, index }) => {
                     </AvatarGroup>
                   </Stack>
                   <Stack>
-                    <NextLink href={`/dashboard/${index}`} passHref>
+                    <NextLink href={`/projects/${projectIndex}`} passHref>
 
                       <Typography
                         color="textPrimary"
@@ -194,14 +198,14 @@ const CustomerCard = ({ course, customer, index }) => {
           sx={{ mt: 'auto', mb: 0, pt: 2.25 }}
         >
           <Typography variant="caption" color="secondary">
-            Created: Nov 25th 2023
+            Created: {course.start_date}
           </Typography>
           <Stack direction="row" spacing={1}>
           <Button variant="outlined" size="small" onClick={handleClickOpen}>
             Preview
           </Button>
 
-          <NextLink href={`/dashboard/${index}`} passHref>
+          <NextLink href={`/projects/${projectIndex}`} passHref>
             <Button variant="contained" size="small" >
               Open
             </Button>

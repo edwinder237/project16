@@ -35,6 +35,8 @@
   "coming-soon": "Coming Soon",
   "components": "Components",
   "contact-us": "Contact US",
+  "Courses":"Courses",
+  "Course Manager":"Course Manager",
   "custom": "Custom",
   "customer": "Customer",
   "dashboard": "Dashboard",
@@ -93,6 +95,8 @@
   "products": "Products",
   "product-details": "Product Details",
   "product-list": "Product List",
+  "Project Manager": "Project Manager",
+  "Projects": "Projects",
   "profile": "Profile",
   "progress": "Progress",
   "radio": "Radio",
@@ -128,4 +132,6 @@
   "user-profile": "User Profile",
   "utils": "Utils",
   "widgets": "Widgets"
+
+
 }

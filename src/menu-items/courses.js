@@ -2,20 +2,20 @@
 import { FormattedMessage } from 'react-intl';
 
 // assets
-import { DollarOutlined, LoginOutlined, PhoneOutlined, RocketOutlined,UnorderedListOutlined,EditOutlined,ApartmentOutlined,ReadOutlined } from '@ant-design/icons';
+import { ReadOutlined } from '@ant-design/icons';
 
 // icons
-const icons = { DollarOutlined, LoginOutlined, PhoneOutlined, RocketOutlined, UnorderedListOutlined, EditOutlined,ApartmentOutlined,ReadOutlined };
+const icons = { ReadOutlined };
 
 // ==============================|| MENU ITEMS - PAGES ||============================== //
 
 const Courses = {
-  id: 'group-pages',
+  id: 'Course Manager',
   title: <FormattedMessage id="Course Manager" />,
   type: 'group',
   children: [
     {
-      id: 'list',
+      id: 'Courses',
       title: <FormattedMessage id="Courses" />,
       type: 'item',
       url: '/course-manager/list',
@@ -27,3 +27,6 @@ const Courses = {
 };
 
 export default Courses;
+
+
+//DOM Troubleshoot: DollarOutlined, LoginOutlined, PhoneOutlined, RocketOutlined,UnorderedListOutlined,EditOutlined,ApartmentOutlined,

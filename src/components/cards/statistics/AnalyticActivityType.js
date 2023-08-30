@@ -41,14 +41,14 @@ const AnalyticActivityType = ({ color = 'primary', title, count, percentage, isL
 
   </MainCard>
 );
-
-AnalyticActivityType.propTypes = {
-  title: PropTypes.string,
-  count: PropTypes.string,
-  percentage: PropTypes.number,
-  isLoss: PropTypes.bool,
-  color: PropTypes.string,
-  extra: PropTypes.string
-};
+// DOM temp fix
+//AnalyticActivityType.propTypes = {
+ // title: PropTypes.string,
+//  count: PropTypes.string,
+//  percentage: PropTypes.number,
+ // isLoss: PropTypes.bool,
+ // color: PropTypes.string,
+//  extra: PropTypes.string
+//};
 
 export default AnalyticActivityType;

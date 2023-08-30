@@ -1,4 +1,5 @@
 // project import
+import { color } from '@mui/system';
 import getColors from 'utils/getColors';
 
 // ==============================|| CHIP - COLORS ||============================== //
@@ -40,6 +41,8 @@ export default function Chip(theme) {
     MuiChip: {
       styleOverrides: {
         root: {
+          color: '#fff', // Set the text color for the chip
+          backgroundColor: 'primary', // Set the background color for the chip
           borderRadius: 4,
           '&:active': {
             boxShadow: 'none'

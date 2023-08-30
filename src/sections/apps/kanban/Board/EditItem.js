@@ -171,7 +171,7 @@ const EditItem = ({ item, profiles, userStory, columns, handleDrawerOpen }) => {
               <InputLabel>Due date</InputLabel>
               <DesktopDatePicker
                 value={formik.values.dueDate}
-                inputFormat="dd/MM/yyyy"
+                format="dd/MM/yyyy"
                 onChange={(date) => {
                   formik.setFieldValue('dueDate', date);
                 }}

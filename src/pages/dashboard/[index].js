@@ -3,8 +3,6 @@ import { useRouter } from 'next/router'
 import DashboardDefault from 'pages/dashboard/default'
 
 
-// material-ui
-import { Typography,List, ListItem,IconButton,MoreOutlined,ListItemAvatar,ListItemText } from '@mui/material';
 
 // project imports
 import Layout from 'layout';

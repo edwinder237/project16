@@ -23,8 +23,7 @@ const initialState = {
 const ConfigContext = createContext(initialState);
 
 function ConfigProvider({ children }) {
-  const [config, setConfig] = useLocalStorage('mantis-react-next-ts-config', initialState);
-  //console.log(initialState)
+  const [config, setConfig] = useLocalStorage('edwind-config', initialState);
 
   const onChangeContainer = () => {
     setConfig({

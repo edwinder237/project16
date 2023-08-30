@@ -5,9 +5,21 @@ import axios from 'utils/axios';
 import { dispatch } from 'store';
 
 const initialState = {
-  calendarView: 'dayGridMonth',
+  //calendarView: 'dayGridMonth',
+  calendarView: 'listWeek',
   error: false,
-  events: [],
+  events: [{ //added for testing. please api route
+    title: 'my event',
+    start: '2023-09-12T10:30:00',
+    end: '2023-09-12T17:30:00',
+  },
+  {
+    title: 'my event',
+    start: '2023-09-13T13:30:00',
+    end: '2023-09-13T17:30:00',
+  },
+  
+  ],
   isLoader: false,
   isModalOpen: false,
   selectedEventId: null,
@@ -106,7 +118,8 @@ export function getEvents() {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
-      const response = await axios.get('/api/calendar/events');
+      //const response = await axios.get('/api/calendar/events');
+      const response = await axios.get('/api/kanban/fakeEvents');
       dispatch(calendar.actions.setEvents(response.data.events));
     } catch (error) {
       dispatch(calendar.actions.hasError(error));

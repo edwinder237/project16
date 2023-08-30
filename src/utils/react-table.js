@@ -46,11 +46,14 @@ GlobalFilter.propTypes = {
 };
 
 export function DefaultColumnFilter({ column: { filterValue, Header, setFilter } }) {
+ // console.log("DefaultColumnFilter RUN")
+  //console.log(filterValue, Header, setFilter)
   return (
     <TextField
       fullWidth
       value={filterValue || ''}
       onChange={(e) => {
+        console.log(e.target.value)
         setFilter(e.target.value || undefined);
       }}
       placeholder={Header}
@@ -68,7 +71,7 @@ export function DateColumnFilter({ column: { filterValue, Header, setFilter } })
     <FormControl sx={{ width: '100%' }}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DatePicker
-          inputFormat="dd/MM/yyyy"
+          format="dd/MM/yyyy"
           value={filterValue || null}
           onChange={(newValue) => {
             let formatDateFn = undefined;
