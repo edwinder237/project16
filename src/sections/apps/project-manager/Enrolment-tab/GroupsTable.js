@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useCallback, useMemo, Fragment, useState, useEffect } from 'react';
 
 // material-ui
-import { Box, Button, Chip, Dialog, IconButton, Menu, MenuItem, Typography, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@mui/material';
+import { Box, Chip, Dialog, IconButton, Menu, MenuItem, Typography, Stack, Table, TableBody, TableCell, TableHead, TableRow} from '@mui/material';
 
 // third-party
 import { useExpanded, useTable } from 'react-table';
@@ -17,13 +17,13 @@ import LinearWithLabel from 'components/@extended/progress/LinearWithLabel';
 import { PopupTransition } from 'components/@extended/Transitions';
 
 // assets
-import { BackwardOutlined, DownOutlined, RightOutlined, PlusOutlined, MailOutlined, CopyOutlined, DeleteOutlined, ForwardOutlined, MoreOutlined } from '@ant-design/icons';
+import {  DownOutlined, RightOutlined, PlusOutlined, MailOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
 import AddButton from 'components/StyledButtons';
 import AddGroup from './AddGroup';
 
-import { useDispatch, useSelector } from 'store';
+import { useDispatch } from 'store';
 import { addGroup, removeGroup } from 'store/reducers/projects';
-import { stringify } from 'uuid';
+
 
 
 // ==============================|| REACT TABLE ||============================== //

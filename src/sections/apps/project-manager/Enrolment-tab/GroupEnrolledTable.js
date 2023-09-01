@@ -2,16 +2,16 @@ import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 
 // material-ui
-import { Box, Chip, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Box, Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 
 // third-party
 import { useTable, useFilters, usePagination } from 'react-table';
 
 // project import
 import Layout from 'layout';
-import ScrollX from 'components/ScrollX';
+
 import LinearWithLabel from 'components/@extended/progress/LinearWithLabel';
-import { CSVExport, TablePagination } from 'components/third-party/ReactTable';
+import { TablePagination } from 'components/third-party/ReactTable';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -113,10 +113,7 @@ ProgressCell.propTypes = {
 };
 
 const GroupEnrolledTable = ({ Enrolled }) => {
-
- 
-
- const attendanceStatusesArray = [
+const attendanceStatusesArray = [
   "Present",
   "Absent",
   "Tardy (Late)",

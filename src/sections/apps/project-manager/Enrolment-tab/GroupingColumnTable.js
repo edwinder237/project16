@@ -84,7 +84,7 @@ function ReactTable({ columns, data,renderRowSubComponent }) {
   function handleCreateGroup() {
     alert("yo")
 
-  };
+  }
 
   return (
     <MainCard
@@ -251,7 +251,7 @@ function GroupingColumnTable({ data }) {
     ],
     []
   );
-  const renderRowSubComponent = useCallback(({ row }) => <ExpandingGroupDetail data={data} />, [data]);
+  const renderRowSubComponent = useCallback(() => <ExpandingGroupDetail data={data} />, [data]);
   
   return <ReactTable columns={columns} data={data} renderRowSubComponent={renderRowSubComponent}  />;
 }

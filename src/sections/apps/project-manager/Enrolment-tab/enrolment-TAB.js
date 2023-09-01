@@ -7,9 +7,8 @@ import { Grid } from '@mui/material';
 import Layout from 'layout';
 import Page from 'components/Page';
 import GroupTable from './GroupsTable';
-import ParticipantsTable from './ParticipantsTable';
 import ParticipantTable from './ParticipantTable';
-import projects from 'store/reducers/projects';
+
 
 
 // ==============================|| REACT TABLE - GROUPING ||============================== //

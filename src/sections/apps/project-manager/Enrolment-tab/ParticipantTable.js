@@ -22,13 +22,12 @@ import {
   TextField,
   Select,
   Slider,
-  Tooltip,
+  Tooltip
 } from '@mui/material';
 
 // third-party
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { NumericFormat } from 'react-number-format';
 import update from 'immutability-helper';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -78,7 +77,6 @@ import {
   DefaultColumnFilter,
   SelectColumnFilter,
   SliderColumnFilter,
-  NumberRangeColumnFilter
 } from 'utils/react-table';
 
 // assets
