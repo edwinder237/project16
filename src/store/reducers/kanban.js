@@ -5,19 +5,16 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'utils/axios';
 import { dispatch } from '../index';
 
-
 const dataRoutes = {
-
   // projects
-  
+
   addGroup: '/api/kanban/add-group',
   getGroups: '/api/kanban/groups',
-////
+  ////
   getColumns: '/api/kanban/columns',
   getNestedColumns: '/api/kanban/nested-columns',
   getNestedColumns2: '/api/kanban/nested-columns2',
 
-  getItems: '/api/kanban/items',
   getColumnsOrder: '/api/kanban/columns-order',
 
   getComments: '/api/kanban/comments',
@@ -41,7 +38,6 @@ const dataRoutes = {
   updateStoryItemOrder: '/api/kanban/update-storyitem-order',
   addStoryComment: '/api/kanban/add-story-comment',
   deleteStory: '/api/kanban/delete-story',
-  deleteItem: '/api/kanban/delete-item',
 
   // project-manager routes
   getProjects: '/api/kanban/fakeProjects',
@@ -64,9 +60,9 @@ const initialState = {
   activities: [],
 
   // project-manager
-  projects:[],
-  events:[],
-  groups:[],
+  projects: [],
+  events: [],
+  groups: []
 };
 
 const slice = createSlice({
@@ -75,17 +71,14 @@ const slice = createSlice({
   reducers: {
     //PROJECTS
 
-        // ADD GROUP
-        addGroupSuccess(state, action) {
-          state.groups = action.payload.newGroupsArray;
-          console.log(state.groups);
-        },
-        getGroups(state, action) {
-          state.groups = action.payload.groups;
-        },
-
-
-
+    // ADD GROUP
+    addGroupSuccess(state, action) {
+      state.groups = action.payload.newGroupsArray;
+      console.log(state.groups);
+    },
+    getGroups(state, action) {
+      state.groups = action.payload.groups;
+    },
 
     // HAS ERROR
     hasError(state, action) {
@@ -218,18 +211,17 @@ const slice = createSlice({
     getProfilesSuccess(state, action) {
       state.profiles = action.payload;
     },
-// Project-manager stuff///
+    // Project-manager stuff///
     // GET ITEMS
     getItemsSuccess(state, action) {
       state.items = action.payload;
-
     },
 
     // GET PROJECTS
     getProjectsSuccess(state, action) {
       state.projects = action.payload;
     },
-       // GET EVENTS
+    // GET EVENTS
     getEventsSuccess(state, action) {
       state.events = action.payload;
     },
@@ -255,12 +247,12 @@ const slice = createSlice({
 // Reducer
 export default slice.reducer;
 
-// projects 
+// projects
 
 export function getGroups(groups) {
   return async () => {
     try {
-      const response = await axios.post(dataRoutes.getGroups,{groups});
+      const response = await axios.post(dataRoutes.getGroups, { groups });
       dispatch(slice.actions.getGroups(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -268,18 +260,16 @@ export function getGroups(groups) {
   };
 }
 
-export function addGroup(newGroup,groups) {
+export function addGroup(newGroup, groups) {
   return async () => {
     try {
-      const response = await axios.post(dataRoutes.addGroup, {newGroup,groups});
+      const response = await axios.post(dataRoutes.addGroup, { newGroup, groups });
       dispatch(slice.actions.addGroupSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
-
-
 
 // ----------------------------------------------------------------------
 
@@ -350,12 +340,11 @@ export function getProfiles() {
   };
 }
 
-
 export function getDndItems(query, stateKey, stateIndex, storedState) {
   return async () => {
     try {
       const response = await axios.get(query);
-      dispatch(slice.actions.getModulesSuccess(response.data[stateKey][stateIndex][storedState]))
+      dispatch(slice.actions.getModulesSuccess(response.data[stateKey][stateIndex][storedState]));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -366,23 +355,23 @@ export function getItems(state, i, child) {
   return async () => {
     try {
       const response = await axios.get(dataRoutes.getItems);
-      dispatch(slice.actions.getItemsSuccess(response.data.items))
+      dispatch(slice.actions.getItemsSuccess(response.data.items));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
-// project-manager 
+// project-manager
 //export function getProjects(state, i, child) {
- // return async () => {
-  //  try {
-   //   const response = await axios.get(dataRoutes.getProjects);
-      //console.log(response.data);
-   //   dispatch(slice.actions.getProjectsSuccess(response.data.projects))
-   // } catch (error) {
-   //   dispatch(slice.actions.hasError(error));
-   // }
-  //};
+// return async () => {
+//  try {
+//   const response = await axios.get(dataRoutes.getProjects);
+//console.log(response.data);
+//   dispatch(slice.actions.getProjectsSuccess(response.data.projects))
+// } catch (error) {
+//   dispatch(slice.actions.hasError(error));
+// }
+//};
 //}
 
 export function getEvents(state, i, child) {
@@ -390,7 +379,7 @@ export function getEvents(state, i, child) {
     try {
       const response = await axios.get(dataRoutes.getEvents);
       //console.log(response.data);
-      dispatch(slice.actions.getEventsSuccess(response.data.events))
+      dispatch(slice.actions.getEventsSuccess(response.data.events));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -446,7 +435,6 @@ export function updateColumnOrder(columnsOrder) {
     try {
       const response = await axios.post(dataRoutes.updateColumnOrder, { columnsOrder });
       dispatch(slice.actions.updateColumnOrderSuccess(response.data));
-
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

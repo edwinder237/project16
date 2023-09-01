@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import { useCallback, useMemo,Fragment } from 'react';
+import { useCallback, useMemo, Fragment } from 'react';
 
 // material-ui
-import { Box,Button, Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Button, Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 
 // third-party
 import { useTable, useGroupBy, useExpanded } from 'react-table';
@@ -15,15 +15,14 @@ import LinearWithLabel from 'components/@extended/progress/LinearWithLabel';
 import { roundedMedian, useControlledState } from 'utils/react-table';
 import ExpandingGroupDetail from './ExpandingGroupDetail';
 
-
 // assets
-import { DownOutlined, GroupOutlined, RightOutlined, UngroupOutlined,PlusOutlined } from '@ant-design/icons';
+import { DownOutlined, GroupOutlined, RightOutlined, UngroupOutlined, PlusOutlined } from '@ant-design/icons';
 
 // ==============================|| REACT TABLE ||============================== //
-const tableTitle = "Groups/Class";
+const tableTitle = 'Groups/Class';
 
-function ReactTable({ columns, data,renderRowSubComponent }) {
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow,visibleColumns } = useTable(
+function ReactTable({ columns, data, renderRowSubComponent }) {
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, visibleColumns } = useTable(
     {
       columns,
       data,
@@ -82,9 +81,8 @@ function ReactTable({ columns, data,renderRowSubComponent }) {
   }
 
   function handleCreateGroup() {
-    alert("yo")
-
-  };
+    alert('yo');
+  }
 
   return (
     <MainCard
@@ -92,10 +90,10 @@ function ReactTable({ columns, data,renderRowSubComponent }) {
       title={`${tableTitle} list`}
       secondary={
         <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', sm: 'flex' } }}>
-          <Legend /> 
+          <Legend />
           <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleCreateGroup} size="small">
-              Add {tableTitle}
-            </Button>
+            Add {tableTitle}
+          </Button>
           <CSVExport data={groupedData} filename={'grouping-single-column-table.csv'} />
         </Stack>
       }
@@ -135,21 +133,21 @@ function ReactTable({ columns, data,renderRowSubComponent }) {
               const rowProps = row.getRowProps();
               return (
                 <Fragment key={i}>
-                <TableRow {...row.getRowProps()} key={i}>
-                  {row.cells.map((cell, index) => {
-                    let bgcolor = 'background.paper';
-                    if (cell.isAggregated) bgcolor = 'warning.lighter';
-                    if (cell.isGrouped) bgcolor = 'success.lighter';
-                    if (cell.isPlaceholder) bgcolor = 'error.lighter';
+                  <TableRow {...row.getRowProps()} key={i}>
+                    {row.cells.map((cell, index) => {
+                      let bgcolor = 'background.paper';
+                      if (cell.isAggregated) bgcolor = 'warning.lighter';
+                      if (cell.isGrouped) bgcolor = 'success.lighter';
+                      if (cell.isPlaceholder) bgcolor = 'error.lighter';
 
-                    return (
-                      <TableCell {...cell.getCellProps([{ className: cell.column.className }])} sx={{ bgcolor }} key={index}>
-                        {cell.isAggregated ? cell.render('Aggregated') : cell.isPlaceholder ? null : cell.render('Cell')}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-                {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns })}
+                      return (
+                        <TableCell {...cell.getCellProps([{ className: cell.column.className }])} sx={{ bgcolor }} key={index}>
+                          {cell.isAggregated ? cell.render('Aggregated') : cell.isPlaceholder ? null : cell.render('Cell')}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                  {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns })}
                 </Fragment>
               );
             })}
@@ -252,8 +250,8 @@ function GroupingColumnTable({ data }) {
     []
   );
   const renderRowSubComponent = useCallback(({ row }) => <ExpandingGroupDetail data={data} />, [data]);
-  
-  return <ReactTable columns={columns} data={data} renderRowSubComponent={renderRowSubComponent}  />;
+
+  return <ReactTable columns={columns} data={data} renderRowSubComponent={renderRowSubComponent} />;
 }
 
 GroupingColumnTable.propTypes = {

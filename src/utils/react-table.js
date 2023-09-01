@@ -46,14 +46,14 @@ GlobalFilter.propTypes = {
 };
 
 export function DefaultColumnFilter({ column: { filterValue, Header, setFilter } }) {
- // console.log("DefaultColumnFilter RUN")
+  // console.log("DefaultColumnFilter RUN")
   //console.log(filterValue, Header, setFilter)
   return (
     <TextField
       fullWidth
       value={filterValue || ''}
       onChange={(e) => {
-        console.log(e.target.value)
+        console.log(e.target.value);
         setFilter(e.target.value || undefined);
       }}
       placeholder={Header}

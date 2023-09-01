@@ -28,13 +28,10 @@ import { PlusOutlined } from '@ant-design/icons';
 
 // ==============================|| CALENDAR - MAIN ||============================== //
 
-
-const Calendar = ({events,project_parentGroup,getLookupData,curriculum}) => {
-
+const Calendar = ({ events, project_parentGroup, getLookupData, curriculum }) => {
   const [loading, setLoading] = useState(true);
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const { calendarView, isModalOpen, selectedRange } = useSelector((state) => state.calendar);
-
 
   const selectedEvent = useSelector((state) => {
     const { events, selectedEventId } = state.calendar;
@@ -126,24 +123,27 @@ const Calendar = ({events,project_parentGroup,getLookupData,curriculum}) => {
   };
 
   const handleEventSelect = (arg) => {
-      // Reset background color of all events
-  calendarRef.current.getApi().getEvents().forEach(event => {
-    event.setProp('backgroundColor', '');
-  });
+    // Reset background color of all events
+    calendarRef.current
+      .getApi()
+      .getEvents()
+      .forEach((event) => {
+        event.setProp('backgroundColor', '');
+      });
 
-  // Highlight the clicked event in yellow
-  arg.event.setProp('backgroundColor', 'yellow');
-  
-  //returns an an date and course id
-  const eventProps = arg.event.extendedProps
-  const lookupData = {
-    courseTitle: arg.event.title,
-    courseId: eventProps.uuid,
-    groupId:"Group A"
-  };
-  getLookupData(lookupData)
+    // Highlight the clicked event in yellow
+    arg.event.setProp('backgroundColor', 'yellow');
 
-   // dispatch(selectEvent(arg.event.id));
+    //returns an an date and course id
+    const eventProps = arg.event.extendedProps;
+    const lookupData = {
+      courseTitle: arg.event.title,
+      courseId: eventProps.uuid,
+      groupId: 'Group A'
+    };
+    getLookupData(lookupData);
+
+    // dispatch(selectEvent(arg.event.id));
   };
 
   const handleEventUpdate = async ({ event }) => {
@@ -166,7 +166,6 @@ const Calendar = ({events,project_parentGroup,getLookupData,curriculum}) => {
 
   if (loading) return <Loader />;
 
-
   return (
     <Page title={`${project_parentGroup} Schedule`}>
       <Box sx={{ position: 'relative' }}>
@@ -181,7 +180,7 @@ const Calendar = ({events,project_parentGroup,getLookupData,curriculum}) => {
           />
 
           <FullCalendar
-            weekends ={true}
+            weekends={true}
             editable
             droppable
             selectable
@@ -230,7 +229,7 @@ const Calendar = ({events,project_parentGroup,getLookupData,curriculum}) => {
 
 // to be added back to project views in menu
 //Calendar.getLayout = function getLayout(page) {
- // return <Layout>{page}</Layout>;
+// return <Layout>{page}</Layout>;
 //};
 
 export default Calendar;
