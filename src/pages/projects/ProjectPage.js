@@ -113,7 +113,7 @@ const ProjectPage = ({ Project, index, }) => {
           <Typography variant="h5">Project - {Project.title}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={6} lg={3}>
-          <AnalyticEcommerce title="Duration" count={`${60} min`} extra="35,000" />
+          <AnalyticEcommerce title="Duration" count={`${80} min`} extra="35,000" />
         </Grid>
         <Grid item xs={12} sm={6} md={6} lg={3}>
           <AnalyticEcommerce title="Modules" count={5} extra="8,900" />
@@ -144,14 +144,18 @@ const ProjectPage = ({ Project, index, }) => {
 
 
             <TabPanel value={tabValue} index={0}>
-              <Chip color='info' label={"Color please"}/>
                 
              
               dashboard here
+              <br/>
               -- daily reports
+              <br/>
               -- attendance report by session/group/month etc
+              <br/>
               -- learning progress
+              <br/>
               -- the most misted questions
+              <br/>
               --
 
             </TabPanel >

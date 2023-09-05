@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 
 //REDUX
 import { useDispatch, useSelector } from 'store';
-import { getProjects, getGroupsFromProjectEmployees } from 'store/reducers/projects';
+import { getProjects } from 'store/reducers/projects';
 
 
 // project imports
@@ -38,8 +38,10 @@ function ProjectDefault() {
   }, []);
 
 
-console.log('Hello INDEX ROUTER')
+
+
   if (Project) {
+    console.log('Hello INDEX ROUTER',Project.participants)
     return (
       <Page title={Project.title}>
         <ProjectPage Project={Project} index={projectIndexRouter} />

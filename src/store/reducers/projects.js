@@ -42,6 +42,7 @@ const slice = createSlice({
     // ADD GROUP
     addGroupSuccess(state, action) {
       const { newGroupsArray, projectIndex } = action.payload;
+      console.log(newGroupsArray, projectIndex )
       state.projects[projectIndex].groups = newGroupsArray;
     },
     // REMOVE GROUP
@@ -109,8 +110,8 @@ const slice = createSlice({
     },
     // REMOVOVE PARTICIPANT
     removeParticipantSuccess(state, action) {
-      const { projectIndex } = action.payload;
-      state.projects[projectIndex].participants = action.payload.removedParticipant;
+      const { projectIndex,removedParticipant } = action.payload;
+      state.projects[projectIndex].participants = removedParticipant;
     }
   }
 });

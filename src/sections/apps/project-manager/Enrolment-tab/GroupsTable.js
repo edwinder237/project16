@@ -1,37 +1,61 @@
-import PropTypes from 'prop-types';
-import { useCallback, useMemo, Fragment, useState, useEffect } from 'react';
+import PropTypes from "prop-types";
+import { useCallback, useMemo, Fragment, useState, useEffect } from "react";
 
 // material-ui
-import { Box, Chip, Dialog, IconButton, Menu, MenuItem, Typography, Stack, Table, TableBody, TableCell, TableHead, TableRow} from '@mui/material';
+import useMediaQuery from "@mui/material/useMediaQuery";
+import {
+  Box,
+  Chip,
+  Dialog,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 
 // third-party
-import { useExpanded, useTable } from 'react-table';
+import { useExpanded, useTable } from "react-table";
 
 // project import
-import MainCard from 'components/MainCard';
-import ScrollX from 'components/ScrollX';
-import GroupDetails from './GroupDetails';
-import { CSVExport } from 'components/third-party/ReactTable';
-import LinearWithLabel from 'components/@extended/progress/LinearWithLabel';
+import MainCard from "components/MainCard";
+import ScrollX from "components/ScrollX";
+import GroupDetails from "./GroupDetails";
+import { CSVExport } from "components/third-party/ReactTable";
+import LinearWithLabel from "components/@extended/progress/LinearWithLabel";
 // ADD BUTTON DEPS
-import { PopupTransition } from 'components/@extended/Transitions';
+import { PopupTransition } from "components/@extended/Transitions";
 
 // assets
-import {  DownOutlined, RightOutlined, PlusOutlined, MailOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
-import AddButton from 'components/StyledButtons';
-import AddGroup from './AddGroup';
+import {
+  DownOutlined,
+  RightOutlined,
+  PlusOutlined,
+  MailOutlined,
+  DeleteOutlined,
+  MoreOutlined,
+} from "@ant-design/icons";
+import AddButton from "components/StyledButtons";
+import AddGroup from "./AddGroup";
 
-import { useDispatch } from 'store';
-import { addGroup, removeGroup } from 'store/reducers/projects';
-
-
+import { useDispatch } from "store";
+import { addGroup, removeGroup } from "store/reducers/projects";
 
 // ==============================|| REACT TABLE ||============================== //
 
-const tableName = "Groups"
+const tableName = "Groups";
 
-
-const ColumnCell = ({ row, setEditableRowIndex, editableRowIndex, handleRemoveGroup }) => {
+const ColumnCell = ({
+  row,
+  setEditableRowIndex,
+  editableRowIndex,
+  handleRemoveGroup,
+}) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClickSort = (event) => {
@@ -44,20 +68,23 @@ const ColumnCell = ({ row, setEditableRowIndex, editableRowIndex, handleRemoveGr
 
   const open = Boolean(anchorEl);
   return (
-
     <>
-      <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+        spacing={0}
+      >
         <IconButton
           id={`chat-action-button-${editableRowIndex}`}
-          aria-controls={open ? `chat-action-menu-${editableRowIndex}` : undefined}
+          aria-controls={
+            open ? `chat-action-menu-${editableRowIndex}` : undefined
+          }
           aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
+          aria-expanded={open ? "true" : undefined}
           onClick={handleClickSort}
           size="small"
           color="secondary"
-
-
         >
           <MoreOutlined />
         </IconButton>
@@ -68,70 +95,78 @@ const ColumnCell = ({ row, setEditableRowIndex, editableRowIndex, handleRemoveGr
           open={open}
           onClose={handleCloseSort}
           anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right'
+            vertical: "bottom",
+            horizontal: "right",
           }}
           transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right'
+            vertical: "top",
+            horizontal: "right",
           }}
           MenuListProps={{
-            'aria-labelledby': `chat-action-button-${editableRowIndex}`
+            "aria-labelledby": `chat-action-button-${editableRowIndex}`,
           }}
           sx={{
             p: 0,
-            '& .MuiMenu-list': {
-              p: 0
-            }
+            "& .MuiMenu-list": {
+              p: 0,
+            },
           }}
         >
           <MenuItem>
             <MailOutlined style={{ paddingRight: 8 }} />
-            <Typography>Email Credentials  </Typography>
+            <Typography>Email Credentials </Typography>
           </MenuItem>
           <MenuItem onClick={() => handleRemoveGroup(row.original.uuid)}>
             <DeleteOutlined style={{ paddingRight: 8, paddingLeft: 0 }} />
             <Typography>Delete</Typography>
           </MenuItem>
         </Menu>
-
-
       </Stack>
     </>
-  )
-
-}
-
+  );
+};
 
 ColumnCell.propTypes = {
   row: PropTypes.object,
   setEditableRowIndex: PropTypes.func,
-  editableRowIndex: PropTypes.number
+  editableRowIndex: PropTypes.number,
 };
 
-
-
-function ReactTable({ columns: userColumns, data, renderRowSubComponent, handleRemoveGroup }) {
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, visibleColumns } = useTable(
+function ReactTable({
+  columns: userColumns,
+  data,
+  renderRowSubComponent,
+  handleRemoveGroup,
+}) {
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    visibleColumns,
+  } = useTable(
     {
       columns: userColumns,
-      data
+      data,
     },
     useExpanded,
     (hooks) => {
       hooks.allColumns.push((columns) => [
         ...columns,
         {
-          accessor: 'edit',
-          id: 'edit',
-          Footer: 'Edit',
-          Header: 'Action',
+          accessor: "edit",
+          id: "edit",
+          Footer: "Edit",
+          Header: "Action",
           disableFilters: true,
           disableSortBy: true,
           disableGroupBy: true,
           groupByBoundary: true,
-          Cell: ({ row }) => <ColumnCell row={row} handleRemoveGroup={handleRemoveGroup} />
-        }
+          Cell: ({ row }) => (
+            <ColumnCell row={row} handleRemoveGroup={handleRemoveGroup} />
+          ),
+        },
       ]);
     }
   );
@@ -142,8 +177,11 @@ function ReactTable({ columns: userColumns, data, renderRowSubComponent, handleR
         {headerGroups.map((headerGroup, i) => (
           <TableRow key={i} {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column, index) => (
-              <TableCell key={index} {...column.getHeaderProps([{ className: column.className }])}>
-                {column.render('Header')}
+              <TableCell
+                key={index}
+                {...column.getHeaderProps([{ className: column.className }])}
+              >
+                {column.render("Header")}
               </TableCell>
             ))}
           </TableRow>
@@ -158,12 +196,18 @@ function ReactTable({ columns: userColumns, data, renderRowSubComponent, handleR
             <Fragment key={i}>
               <TableRow {...row.getRowProps()}>
                 {row.cells.map((cell, index) => (
-                  <TableCell key={index} {...cell.getCellProps([{ className: cell.column.className }])}>
-                    {cell.render('Cell')}
+                  <TableCell
+                    key={index}
+                    {...cell.getCellProps([
+                      { className: cell.column.className },
+                    ])}
+                  >
+                    {cell.render("Cell")}
                   </TableCell>
                 ))}
               </TableRow>
-              {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns })}
+              {row.isExpanded &&
+                renderRowSubComponent({ row, rowProps, visibleColumns })}
             </Fragment>
           );
         })}
@@ -175,7 +219,7 @@ function ReactTable({ columns: userColumns, data, renderRowSubComponent, handleR
 ReactTable.propTypes = {
   columns: PropTypes.array,
   data: PropTypes.array,
-  renderRowSubComponent: PropTypes.any
+  renderRowSubComponent: PropTypes.any,
 };
 
 // ==============================|| REACT TABLE - EXPANDING TABLE ||============================== //
@@ -183,26 +227,34 @@ ReactTable.propTypes = {
 const CellExpander = ({ row }) => {
   const collapseIcon = row.isExpanded ? <DownOutlined /> : <RightOutlined />;
   return (
-    <Box sx={{ fontSize: '0.75rem', color: 'text.secondary', textAlign: 'center' }} {...row.getToggleRowExpandedProps()}>
+    <Box
+      sx={{ fontSize: "0.75rem", color: "text.secondary", textAlign: "center" }}
+      {...row.getToggleRowExpandedProps()}
+    >
       {collapseIcon}
     </Box>
   );
 };
 
 CellExpander.propTypes = {
-  row: PropTypes.object
+  row: PropTypes.object,
 };
 
 const GroupCell = ({ value, groups }) => {
   const matchingGroup = groups.find((group) => group.groupName === value);
-  
+
   if (matchingGroup) {
     const chipColor = matchingGroup.chipColor;
-    
+
     switch (value) {
       default:
-        return <Chip 
-        style={{ backgroundColor: chipColor, color: '#fff' }}label={`${value}`} size="small" />;
+        return (
+          <Chip
+            style={{ backgroundColor: chipColor, color: "#fff" }}
+            label={`${value}`}
+            size="small"
+          />
+        );
     }
   } else {
     // Handle the case when a matching group is not found
@@ -214,21 +266,18 @@ const GroupCell = ({ value, groups }) => {
 
 GroupCell.propTypes = {
   value: PropTypes.string,
-  chipColor: PropTypes.string
+  chipColor: PropTypes.string,
 };
 
-
-const GroupTable = ({Project}) => {
-
-const { groups, index, participants} = Project;
+const GroupTable = ({ Project }) => {
+  const { groups, index, participants } = Project;
   const [data, setData] = useState([]);
 
-console.log("Project - from GroupTable",Project )
+  //console.log("Project - from GroupTable", );
 
   useEffect(() => {
-    setData(groups)
-  }, [])
-
+    setData(groups);
+  }, []);
 
   const dispatch = useDispatch();
   // ADD BUTTON DEPS
@@ -242,72 +291,76 @@ console.log("Project - from GroupTable",Project )
     //this fucntion adds the newlly created group to the project.groups state
 
     dispatch(addGroup(newGroup, groups, index));
-
-  };
+  }
 
   function handleRemoveGroup(uuid) {
-
-
-
     const updatedGroups = groups.filter((group) => group.uuid !== uuid);
-    console.log(uuid)
+    console.log(uuid);
     dispatch(removeGroup(updatedGroups, index));
-
-  };
-
+  }
 
   const columns = useMemo(
     () => [
       {
         Header: () => null,
-        id: 'expander',
-        className: 'cell-center',
+        id: "expander",
+        className: "cell-center",
         Cell: CellExpander,
-        SubCell: () => null
+        SubCell: () => null,
       },
       {
-        Header: 'Group Name',
-        accessor: 'groupName',
-        Cell: (props) => <GroupCell{...props} groups={groups} />
+        Header: "Group Name",
+        accessor: "groupName",
+        Cell: (props) => <GroupCell {...props} groups={groups} />,
       },
       {
-        Header: 'Size',
-        accessor: 'employees',
-        Cell: ({ value }) => <span>{value.length}</span>
-
+        Header: "Size",
+        accessor: "employees",
+        Cell: ({ value }) => <span>{value.length}</span>,
       },
       {
-        Header: 'Curriculum Progress',
-        accessor: 'progress',
-        Cell: ProgressCell
-      }
+        Header: "Curriculum Progress",
+        accessor: "progress",
+        Cell: ProgressCell,
+      },
     ],
     [groups]
   );
 
-  const renderRowSubComponent = useCallback(({ row }) => <GroupDetails Group={groups[row.id]
-  } />, [groups]);
+  const renderRowSubComponent = useCallback(
+    ({ row }) => <GroupDetails Group={groups[row.id]} />,
+    [groups]
+  );
 
   return (
     <Fragment>
       <MainCard
         title={tableName}
         content={false}
-        subheader="This section enables the assignment of courses to groups and the management of participants."
+        subheader={
+          "This section enables the assignment of courses to groups and the management of participants."
+        }
         secondary={
-
-          <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', sm: 'flex' } }}>
-            <AddButton onClick={handleAdd} variant="contained" startIcon={<PlusOutlined />} size="small">
+          <Stack direction="row" spacing={2} sx={{ display: { sm: "flex" } }}>
+            <AddButton
+              onClick={handleAdd}
+              variant="contained"
+              startIcon={<PlusOutlined />}
+              size="small"
+            >
               Add {tableName}
             </AddButton>
-            <CSVExport data={data} filename={'expanding-details-table.csv'} />
+            <CSVExport data={data} filename={"expanding-details-table.csv"} />
           </Stack>
         }
       >
-
-
         <ScrollX>
-          <ReactTable columns={columns} data={groups} renderRowSubComponent={renderRowSubComponent} handleRemoveGroup={handleRemoveGroup} />
+          <ReactTable
+            columns={columns}
+            data={groups}
+            renderRowSubComponent={renderRowSubComponent}
+            handleRemoveGroup={handleRemoveGroup}
+          />
         </ScrollX>
       </MainCard>
       <Dialog
@@ -316,40 +369,57 @@ console.log("Project - from GroupTable",Project )
         TransitionComponent={PopupTransition}
         onClose={handleAdd}
         open={add}
-        sx={{ '& .MuiDialog-paper': { p: 0 } }}
+        sx={{ "& .MuiDialog-paper": { p: 0 } }}
       >
-        <AddGroup customer={customer} onCancel={handleAdd} handleAddParticipant={handleAddGroup} groupsInState={groups} participants={participants} />
+        <AddGroup
+          customer={customer}
+          onCancel={handleAdd}
+          handleAddParticipant={handleAddGroup}
+          groupsInState={groups}
+          participants={participants}
+        />
       </Dialog>
     </Fragment>
   );
 };
 
 GroupTable.propTypes = {
-  groups: PropTypes.array
+  groups: PropTypes.array,
 };
 
 // ==============================|| REACT TABLE - EXPANDING DETAILS ||============================== //
 
 const StatusCell = ({ value }) => {
   switch (value) {
-    case 'Complicated':
-      return <Chip color="error" label="Complicated" size="small" variant="light" />;
-    case 'Relationship':
-      return <Chip color="success" label="Relationship" size="small" variant="light" />;
-    case 'Single':
+    case "Complicated":
+      return (
+        <Chip color="error" label="Complicated" size="small" variant="light" />
+      );
+    case "Relationship":
+      return (
+        <Chip
+          color="success"
+          label="Relationship"
+          size="small"
+          variant="light"
+        />
+      );
+    case "Single":
     default:
       return <Chip color="info" label="Single" size="small" variant="light" />;
   }
 };
 
 StatusCell.propTypes = {
-  value: PropTypes.string
+  value: PropTypes.string,
 };
 
-const ProgressCell = ({ value }) => <LinearWithLabel value={value} sx={{ minWidth: 75 }} />;
+const ProgressCell = ({ value }) => (
+  <LinearWithLabel value={value} sx={{ minWidth: 75 }} />
+);
 
 ProgressCell.propTypes = {
-  value: PropTypes.number
+  value: PropTypes.number,
 };
 
 export default GroupTable;

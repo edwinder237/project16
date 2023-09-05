@@ -366,7 +366,7 @@ const CoursesList = ({ curriculum }) => {
 
   return (
 
-    <Page title="Curriculums">
+    <Page title="Curriculum">
 
       <Stack spacing={3}>
         {curriculum.map((i) => (
