@@ -1,4 +1,4 @@
-import { useState} from 'react';
+import { useState } from 'react';
 
 
 /// import sections 
@@ -14,13 +14,33 @@ import {
   Tabs,
   Tab
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 // project import
+import UserCountCard from 'components/cards/statistics/UserCountCard';
 import AnalyticEcommerce from 'components/cards/statistics/AnalyticEcommerce';
 import AnalyticActivityType from 'components/cards/statistics/AnalyticActivityType';
 import CoursesList from './courses-list';
 import ProductView from './ProductView';
 import EnrolmentTAB from 'sections/apps/project-manager/Enrolment-tab/enrolment-TAB';
+
+// assets
+import {
+  AimOutlined,
+  BarChartOutlined,
+  CalendarOutlined,
+  ContactsOutlined,
+  DownloadOutlined,
+  EyeOutlined,
+  FacebookOutlined,
+  FileTextOutlined,
+  FileProtectOutlined,
+  FieldTimeOutlined,
+  LinkedinOutlined,
+  RedditOutlined,
+  TwitterOutlined,
+  YoutubeOutlined
+} from '@ant-design/icons';
 
 
 
@@ -90,7 +110,7 @@ function a11yProps(index) {
 
 
 const ProjectPage = ({ Project, index, }) => {
-  const {groups} = Project;
+  const { groups } = Project;
   const [tabValue, setTabValue] = useState(0);
 
   const activitiesAnalysis = {
@@ -104,7 +124,18 @@ const ProjectPage = ({ Project, index, }) => {
   };
 
   if (Project) {
-    console.log('Hello From ProjectPAGE - ',Project.groups )
+    const today = new Date();
+    const startDateString = Project.start_date;
+    const endDateString = Project.end_date;
+
+    const startDate = new Date(startDateString);
+    const endDate = new Date(endDateString);
+
+    const millisecondsPerDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
+
+const daysLeft = Math.ceil((endDate - today) / millisecondsPerDay);
+    console.log('Hello From ProjectPAGE - ', today -endDate)
+    const theme = useTheme();
     return (
 
       <Grid container rowSpacing={4.5} columnSpacing={2.75}>
@@ -113,16 +144,16 @@ const ProjectPage = ({ Project, index, }) => {
           <Typography variant="h5">Project - {Project.title}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={6} lg={3}>
-          <AnalyticEcommerce title="Duration" count={`${80} min`} extra="35,000" />
+          <UserCountCard primary="Participants" secondary={Project.participants.length} iconPrimary={ContactsOutlined} color={theme.palette.primary.light} />
         </Grid>
         <Grid item xs={12} sm={6} md={6} lg={3}>
-          <AnalyticEcommerce title="Modules" count={5} extra="8,900" />
+          <UserCountCard primary="Groups" secondary={Project.groups.length} iconPrimary={FileProtectOutlined} color={theme.palette.primary.light} />
         </Grid>
         <Grid item xs={12} sm={6} md={6} lg={3}>
-          <AnalyticActivityType title="Activities" count={activitiesAnalysis} isLoss color="warning" extra="1,943" />
+          <UserCountCard primary="Days left" secondary={daysLeft} iconPrimary={RedditOutlined} color={theme.palette.primary.light} />
         </Grid>
         <Grid item xs={12} sm={6} md={6} lg={3}>
-          <AnalyticEcommerce title="Success rate" count="89%" isLoss color="warning" extra="$20,395" />
+          <UserCountCard primary="Events" secondary={Project.events.length} iconPrimary={FileProtectOutlined} color={theme.palette.secondary.light} />
         </Grid>
 
         <Grid bgcolor="grey" item xs={12} sm={12} md={12} sx={{ mt: 5, display: { sm: '', md: 'block', lg: '' } }} >
@@ -144,18 +175,18 @@ const ProjectPage = ({ Project, index, }) => {
 
 
             <TabPanel value={tabValue} index={0}>
-                
-             
+
+
               dashboard here
-              <br/>
+              <br />
               -- daily reports
-              <br/>
+              <br />
               -- attendance report by session/group/month etc
-              <br/>
+              <br />
               -- learning progress
-              <br/>
+              <br />
               -- the most misted questions
-              <br/>
+              <br />
               --
 
             </TabPanel >
