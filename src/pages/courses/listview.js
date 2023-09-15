@@ -24,7 +24,6 @@ import {
 } from '@mui/material';
 
 // third-party
-import { NumericFormat} from 'react-number-format';
 import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination } from 'react-table';
 
 // project import
@@ -253,7 +252,7 @@ const ActionsCell = (row, setCustomer, setCustomerDeleteId, handleClose, handleA
           {collapseIcon}
         </IconButton>
       </Tooltip>
-                <NextLink href={'/dashboard/0'} passHref>
+                <NextLink href={'/courses/0'} passHref>
 
 
       <Tooltip title="Edit">
