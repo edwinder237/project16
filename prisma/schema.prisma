@@ -1,0 +1,323 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("DATABASE_MIGRATE_URL")
+  relationMode      = "prisma"
+}
+
+model User {
+  id                 String            @id @default(cuid())
+  name               String?
+  email              String?           @unique
+  emailVerified      DateTime?         @map("email_verified")
+  image              String?
+  accounts           Account[]
+  sessions           Session[]
+  username           String?           @unique
+  password           String
+  firstName          String
+  midName            String?
+  lastName           String
+  status             String            @default("active")
+  info               Json //@default({ "bio": "", "phone": "" })
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime?         @updatedAt
+  sub_organization   sub_organizations @relation(fields: [sub_organizationId], references: [id], onDelete: Cascade)
+  sub_organizationId Int
+  projects           projects[]
+
+  @@index([sub_organizationId])
+  @@map("users")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("accounts")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
+model organizations {
+  id                String              @id @default(uuid()) // This field will be a UUID
+  title             String
+  description       String?
+  createdAt         DateTime            @default(now())
+  lastUpdated       DateTime            @default(now())
+  updatedby         String
+  createdBy         String
+  info              Json? // includes{contact_person:'',email:'',phone:'',address:'',industry:'',website:'',tax_id:'' }
+  logo_url          String?
+  status            String?
+  type              String?
+  notes             String?
+  published         Boolean
+  sub_organizations sub_organizations[]
+}
+
+model sub_organizations {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String?
+  createdAt   DateTime   @default(now())
+  lastUpdated DateTime   @default(now())
+  updatedby   String
+  createdBy   String
+  users       User[]
+  projects    projects[]
+
+  organization   organizations @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String        @unique
+}
+
+model projects {
+  id                 Int                    @id @default(autoincrement())
+  sub_organizationId Int
+  sub_organization   sub_organizations      @relation(fields: [sub_organizationId], references: [id])
+  createdAt          DateTime               @default(now())
+  lastUpdated        DateTime               @default(now())
+  updatedby          String?
+  createdBy          String
+  published          Boolean                @default(false)
+  title              String
+  summary            String?
+  duration           Int?
+  tags               Json?
+  projectType        String?
+  projectCategory    String?
+  projectStatus      String
+  startDate          DateTime?
+  endDate            DateTime?
+  ownerId            Int?
+  backgroundImg      String?
+  color              String?
+  participants       project_participants[]
+  groups             groups[]
+  events             events[]
+  user               User                  @relation(fields: [createdBy], references: [id])
+
+  @@index([createdBy])
+  @@index([sub_organizationId])
+}
+
+model participants {
+  id                String                 @id @default(uuid()) // This field will be a UUID
+  firstName         String
+  middleName        String?
+  lastName          String
+  email             String
+  participantStatus String?
+  participantType   String?
+  sub_organization  Int
+  derpartement      String?
+  role              String?
+  notes             String?
+  profilePrefs      Json
+  profileImg        DateTime?
+  credentials       Json
+  createdAt         DateTime               @default(now())
+  lastUpdated       DateTime?              @default(now())
+  updatedby         String? // Remove nullability when activating users
+  createdBy         String? // Remove nullability when activating users
+  projects          project_participants[]
+}
+
+model project_participants {
+  id              Int                  @id @default(autoincrement())
+  project         projects             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId       Int
+  participant     participants         @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  participantId   String
+  event_attendees event_attendees[]
+  group           group_participants[]
+
+  @@unique([participantId])
+  @@index([projectId])
+}
+
+model groups {
+  id           Int                  @id @default(autoincrement())
+  groupName    String
+  project      projects             @relation(fields: [projectId], references: [id])
+  projectId    Int
+  chipColor    String
+  participants group_participants[]
+  event_groups event_groups[]
+
+  @@index([projectId])
+}
+
+model group_participants {
+  id            Int                  @id @default(autoincrement())
+  group         groups               @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId       Int
+  participant   project_participants @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  participantId Int
+
+  @@unique([groupId, participantId]) // Enforce uniqueness for each participant within a group
+  @@index([groupId])
+  @@index([participantId])
+}
+
+model courses {
+  id                 Int       @id @default(autoincrement())
+  userSubParentId    Int?
+  createdAt          DateTime? @default(now())
+  createdBy          String?
+  lastUpdated        DateTime? @updatedAt
+  published          Boolean?
+  title              String
+  summary            String?
+  language           String?
+  deliveryMethod     String?
+  goLiveDate         DateTime?
+  maxParticipants    Int?
+  deadline           DateTime?
+  duration           Int?
+  cost               Float?
+  level              String?
+  accessRestrictions String?
+  certification      String?
+  tags               String?
+  CourseType         String?
+  courseCategory     String?
+  courseStatus       String?
+  targetAudience     String?
+  backgroundImg      String?
+  resources          String?
+  syllabusId         Int?
+  JSONSyllabus       Json?
+  rating             Float?
+  code               String?
+  version            String?
+  modules            modules[]
+  events             events[]
+}
+
+model modules {
+  id            Int          @id @default(autoincrement())
+  createdAt     DateTime     @default(now())
+  lastUpdated   DateTime     @updatedAt
+  published     Boolean
+  title         String
+  summary       String?
+  content       String?
+  JSONContent   Json?
+  duration      Int?
+  moduleStatus  String?
+  backgroundImg String?
+  courseId      Int
+  course        courses      @relation(fields: [courseId], references: [id])
+  activities    activities[]
+  moduleOrder   Int?
+
+  @@index([courseId])
+}
+
+model activities {
+  id               Int      @id @default(autoincrement())
+  createdAt        DateTime @default(now())
+  lastUpdated      DateTime @updatedAt
+  published        Boolean
+  title            String
+  summary          String?
+  content          String?
+  duration         Int?
+  activityType     String?
+  activityCategory String?
+  activityStatus   String?
+  backgroundImg    String?
+  moduleId         Int
+  module           modules  @relation(fields: [moduleId], references: [id])
+  ActivityOrder    Int?
+
+  @@index([moduleId])
+}
+
+model events {
+  id              Int               @id @default(autoincrement())
+  title           String
+  description     String?
+  eventType       String?
+  event_attendees event_attendees[] // Use plural for relations
+  project         projects          @relation(fields: [projectId], references: [id])
+  projectId       Int
+  course          courses?          @relation(fields: [courseId], references: [id])
+  courseId        Int? // Use optional for nullable fields
+  start           DateTime // Standard FullCalendar start date and time
+  end             DateTime // Standard FullCalendar end date and time
+  allDay          Boolean // Indicates if the event is an all-day event
+  color           String? // Background color of the event
+  textColor       String? // Color of the event text
+  backgroundColor String? // Background color of the event
+  borderColor     String? // Border color of the event
+  editable        Boolean? // Specifies if the event can be edited
+  eventStatus     String?
+  extendedProps   Json? // extendedProps: { location: 'Conference Room A', priority: 'High' }
+  event_groups    event_groups[]
+
+  @@index([projectId])
+  @@index([courseId])
+}
+
+model event_attendees {
+  id                   Int                  @id @default(autoincrement())
+  event                events               @relation(fields: [eventsId], references: [id], onDelete: Cascade)
+  eventsId             Int
+  attendance_status    String               @default("scheduled")
+  project_participants project_participants @relation(fields: [project_paticipantId], references: [id])
+  project_paticipantId Int
+
+  @@unique([project_paticipantId])
+  @@index([eventsId])
+}
+
+model event_groups {
+  id       Int    @id @default(autoincrement())
+  event    events @relation(fields: [eventsId], references: [id], onDelete: Cascade)
+  eventsId Int
+  groupId  Int
+  groups   groups @relation(fields: [groupId], references: [id])
+
+  @@unique([groupId])
+  @@index([eventsId])
+}
