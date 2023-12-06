@@ -40,12 +40,6 @@ import Page from "components/Page";
 import MainCard from "components/MainCard";
 import AnalyticEcommerce from "components/cards/statistics/AnalyticEcommerce";
 import AnalyticActivityType from "components/cards/statistics/AnalyticActivityType";
-import IncomeAreaChart from "sections/dashboard/default/IncomeAreaChart";
-import MonthlyBarChart from "sections/dashboard/default/MonthlyBarChart";
-import ReportAreaChart from "sections/dashboard/default/ReportAreaChart";
-import SalesChart from "sections/dashboard/SalesChart";
-import OrdersTable from "sections/dashboard/default/OrdersTable";
-import Board from "../../kanban/Board";
 import ModulesDnd from "./ModulesDnd";
 import TextEditor from "./textEditor";
 import CourseSyllabus from "./courseSyllabus";
@@ -58,10 +52,6 @@ import {
 } from "@ant-design/icons";
 //import { getModules } from "utils/getModules";
 
-const avatar1 = "/assets/images/users/avatar-1.png";
-const avatar2 = "/assets/images/users/avatar-2.png";
-const avatar3 = "/assets/images/users/avatar-3.png";
-const avatar4 = "/assets/images/users/avatar-4.png";
 
 // avatar style
 const avatarSX = {
@@ -108,7 +98,7 @@ const CourseEditPage = ({ courseId }) => {
   //console.log('sybalius =',courses)
   const courseModules = courses.filter(
     (course) => course.id.toString() === courseId
-  )[0].modules;
+  )[0]?.modules;
   const course = courses.filter(
     (course) => course.id.toString() === courseId
   )[0];
@@ -341,7 +331,7 @@ const CourseEditPage = ({ courseId }) => {
               title="Editor"
             >
               <CourseSyllabus/>
-              <Editor courseId={courseId} selectedModuleId={selectedModuleId} />
+             {false && <Editor courseId={courseId} selectedModuleId={selectedModuleId} />}
             </MainCard>
           </Grid>
         </Grid>

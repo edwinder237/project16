@@ -43,7 +43,7 @@ import IconButton from 'components/@extended/IconButton';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { addGroup } from 'store/reducers/projects';
 import ColorPalette from './ColorPalette';
-import TransferLists from '../transferLists';
+import TransferLists from './transferLists';
 
 // assets
 import { CameraOutlined, DeleteFilled } from '@ant-design/icons';

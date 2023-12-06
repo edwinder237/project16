@@ -13,6 +13,13 @@ export default async function handler(req, res) {
       where: {
         email: email,
       },
+      include:{
+        sub_organization: {
+          select:{
+            title : true
+          }
+        }
+      }
     });
 
     if (!user) {
@@ -25,12 +32,14 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "Invalid Password" });
     }
 
-    console.log("Fetched user :", user);
+    console.log("Fetched user :", user.sub_organization.title);
 
     return res.status(200).json({
       id: user.id,
       name: user.name,
       email: user.email,
+      subOrganizationId:  user.sub_organizationId,
+      subOrganizationName: user.sub_organization.title,
     });
   } catch (error) {
     console.error("Error fetching user:", error);

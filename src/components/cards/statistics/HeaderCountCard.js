@@ -25,7 +25,7 @@ const HeaderCountCard = ({ primary, secondary, iconPrimary, color }) => {
   const primaryIcon = iconPrimary ? <IconPrimary fontSize="large" /> : null;
 
   return (
-    <Card elevation={0} sx={{ background: color, position: 'relative', color: '#fff' }}>
+    <Card elevation={0} sx={{ height:125, background: color, position: 'relative', color: '#fff' }}>
       <CardContent>
         <IconWrapper>{primaryIcon}</IconWrapper>
         <Grid container direction="column" justifyContent="center" alignItems="center" spacing={1}>

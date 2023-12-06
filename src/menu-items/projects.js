@@ -20,7 +20,8 @@ const Courses = {
       type: 'item',
       url: '/projects',
       icon: icons.ScheduleOutlined,
-      target: false
+      target: false,
+      breadcrumbs: true
     },
     {
       id: 'calendar',

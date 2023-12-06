@@ -399,7 +399,7 @@ const CoursesTable = () => {
   const { courses, modules } = useSelector((store) => store.courses);
   console.log("from coures-table",courses.filter((course)=>course.id === 1)[0]);
 
-  const courseModules = courses[0].modules;
+
 
   const [data, setData] = useState([{ name: "name" }]);
 
@@ -488,7 +488,7 @@ const CoursesTable = () => {
           {true && (
             <ReactTable
               columns={columns}
-              data={data.length > 0 ? data : [{ name: "bob" }, { name: "bob" }]}
+              data={data.length > 0 ? data : []}
               handleAdd={handleAdd}
               renderRowSubComponent={null}
             />

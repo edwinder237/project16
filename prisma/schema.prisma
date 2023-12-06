@@ -42,7 +42,7 @@ model Session {
   sessionToken String   @unique @map("session_token")
   userId       String   @map("user_id")
   expires      DateTime
-  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@map("sessions")
@@ -61,7 +61,7 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@index([userId])
@@ -110,30 +110,33 @@ model sub_organizations {
 }
 
 model projects {
-  id                 Int                    @id @default(autoincrement())
-  sub_organizationId Int
-  sub_organization   sub_organizations      @relation(fields: [sub_organizationId], references: [id])
-  createdAt          DateTime               @default(now())
-  lastUpdated        DateTime               @default(now())
-  updatedby          String?
-  createdBy          String
-  published          Boolean                @default(false)
-  title              String
-  summary            String?
-  duration           Int?
-  tags               Json?
-  projectType        String?
-  projectCategory    String?
-  projectStatus      String
-  startDate          DateTime?
-  endDate            DateTime?
-  ownerId            Int?
-  backgroundImg      String?
-  color              String?
-  participants       project_participants[]
-  groups             groups[]
-  events             events[]
-  user               User                  @relation(fields: [createdBy], references: [id])
+  id                  Int                    @id @default(autoincrement())
+  cuid                String
+  sub_organizationId  Int
+  sub_organization    sub_organizations      @relation(fields: [sub_organizationId], references: [id])
+  createdAt           DateTime               @default(now())
+  lastUpdated         DateTime               @default(now())
+  updatedby           String?
+  createdBy           String
+  published           Boolean                @default(false)
+  title               String
+  summary             String?                @db.VarChar(1000)
+  duration            Int?
+  tags                Json?
+  projectType         String?
+  projectCategory     String?
+  projectStatus       String
+  startDate           DateTime?
+  endDate             DateTime?
+  backgroundImg       String?
+  color               String?
+  language            String                 @default("english")
+  location            Json?
+  participants        project_participants[]
+  groups              groups[]
+  events              events[]
+  user                User                   @relation(fields: [createdBy], references: [id])
+  project_curriculums project_curriculums[]
 
   @@index([createdBy])
   @@index([sub_organizationId])
@@ -159,6 +162,19 @@ model participants {
   updatedby         String? // Remove nullability when activating users
   createdBy         String? // Remove nullability when activating users
   projects          project_participants[]
+}
+
+model project_curriculums {
+  id           Int         @id @default(autoincrement())
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @default(now())
+  projectId    Int
+  project      projects    @relation(fields: [projectId], references: [id])
+  curriculumId Int         @unique
+  curriculum   curriculums @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
+
+  @@index([curriculumId])
+  @@index([projectId])
 }
 
 model project_participants {
@@ -199,11 +215,12 @@ model group_participants {
 }
 
 model courses {
-  id                 Int       @id @default(autoincrement())
+  id                 Int                  @id @default(autoincrement())
+  cuid               String               @default(cuid())
   userSubParentId    Int?
-  createdAt          DateTime? @default(now())
-  createdBy          String?
-  lastUpdated        DateTime? @updatedAt
+  createdAt          DateTime?            @default(now())
+  createdBy          String
+  lastUpdated        DateTime?            @updatedAt
   published          Boolean?
   title              String
   summary            String?
@@ -231,6 +248,7 @@ model courses {
   version            String?
   modules            modules[]
   events             events[]
+  curriculum_courses curriculum_courses[]
 }
 
 model modules {
@@ -250,6 +268,28 @@ model modules {
   activities    activities[]
   moduleOrder   Int?
 
+  @@index([courseId])
+}
+
+model curriculums {
+  id                  Int                   @id @default(autoincrement())
+  cuid                String                @default(cuid())
+  title               String
+  description         String?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @default(now())
+  project_curriculums project_curriculums[]
+  curriculum_courses  curriculum_courses[]
+}
+
+model curriculum_courses {
+  id           Int         @id @default(autoincrement())
+  curriculumId Int
+  currculum    curriculums @relation(fields: [curriculumId], references: [id])
+  courseId     Int
+  course       courses     @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@index([curriculumId])
   @@index([courseId])
 }
 

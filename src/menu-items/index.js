@@ -4,12 +4,12 @@ import pages from './pages'; //demo page
 
 import Courses from './courses';
 import Projects from './projects';
-//import applications from './applications';
+import applications from './applications';
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-  items: [Courses,Projects,pages]
+  items: [Courses,applications,pages]
 };
 
 export default menuItems;

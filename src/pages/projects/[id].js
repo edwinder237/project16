@@ -11,7 +11,7 @@ import Layout from "layout";
 import Page from "components/Page";
 import Loader from "components/Loader";
 
-import ProjectPage from "./ProjectPage";
+import ProjectPage from "../../sections/apps/project-manager/Poject-page/ProjectPage";
 
 // ==============================|| ROUTER ||============================== //
 

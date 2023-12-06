@@ -6,7 +6,6 @@ import axios from "utils/axios";
 import { dispatch } from "../index";
 
 const dataRoutes = {
-  getProjects: "/api/projects/fakeProjects",
   fetchSingleProject: "/api/projects/fetchSingleProject",
   fetchProjects: "/api/projects/fetchProjects",
   fetchProjectParticipantsDetails: "/api/projects/fetchParticipantsDetails",
@@ -14,7 +13,7 @@ const dataRoutes = {
   getGroupsFromProjectEmployees: "/api/projects/groupsFromProjectEmployees",
   getEvents: "/api/projects/fetchEvents",
   addGroup: "/api/projects/add-group",
-  fetchGroupsDetails:"/api/projects/fetchGroupsDetails",
+  fetchGroupsDetails: "/api/projects/fetchGroupsDetails",
   removeGroup: "/api/projects/remove-group",
   getGroups: "/api/projects/groups",
   getEmployees: "/api/projects/employees",
@@ -27,12 +26,15 @@ const dataRoutes = {
 
 const initialState = {
   error: false,
+  success: false,
+  isAdding: false,
   projects: [],
   singleProject: false,
   project_participants: [],
   events: [],
   groups: [],
   modules: [],
+  project_curriculums: [],
   employees: [],
 };
 
@@ -44,10 +46,27 @@ const slice = createSlice({
     hasError(state, action) {
       state.error = action.payload;
     },
+
+    // HAS SUCCESS
+    hasSuccess(state, action) {
+      state.success = !state.success;
+    },
+    // IS ADDING?
+    isAdding(state, action) {
+      state.isAdding = action.payload;
+    },
     //PROJECTS
 
     // GET PROJECTS
     getProjectsSuccess(state, action) {
+      state.projects = action.payload;
+    },
+    // ADD PROJECT
+    addProjectSuccess(state, action) {
+      state.projects = action.payload.Projects;
+    },
+    // REMOVE PROJECT
+    removeProjectSuccess(state, action) {
       state.projects = action.payload;
     },
 
@@ -80,12 +99,6 @@ const slice = createSlice({
       state.items = action.payload;
     },
 
-    // ADD PROJECTS
-    addProjectsSuccess(state, action) {
-      console.log(action.payload.Projects);
-      state.projects = action.payload.Projects;
-    },
-
     // GET EVENTS
     getEventsSuccess(state, action) {
       state.events = action.payload;
@@ -95,6 +108,11 @@ const slice = createSlice({
     getModulesSuccess(state, action) {
       state.modules = action.payload;
       state.activities = action.payload.activities;
+    },
+
+    // GET CURRICULUMS
+    getCurriculumSuccess(state, action) {
+      state.project_curriculums = action.payload;
     },
 
     // GET EMPLOYEES
@@ -138,11 +156,22 @@ export default slice.reducer;
 
 // projects
 
-export function getProjects(index) {
+export function getProjects() {
   return async () => {
     try {
-      const response = await axios.post(dataRoutes.fetchProjects, { index });
+      const response = await axios.get(dataRoutes.fetchProjects);
       dispatch(slice.actions.getProjectsSuccess(response.data.projects));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getProjectCurriculums(projectId) {
+  return async () => {
+    try {
+      const response = await axios.post("/api/projects/fetchProjectCurriculums",{projectId});
+      dispatch(slice.actions.getCurriculumSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -175,6 +204,51 @@ export function getGroupsFromProjectEmployees(aggregatedGroups, index) {
     }
   };
 }
+export function addProject(newProject, Projects, isAdding) {
+  return async () => {
+    try {
+      const response = await axios.post(dataRoutes.addProject, {
+        newProject,
+        Projects,
+      });
+      await dispatch(slice.actions.addProjectSuccess(response.data));
+      const serverResponse = await axios.post(
+        "/api/projects/db-create-project",
+        {
+          newProject,
+        }
+      );
+      console.log(serverResponse.data);
+      dispatch(slice.actions.isAdding(!isAdding));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function removeProject(projectCUID, projects) {
+  return async () => {
+    try {
+      const serverResOnDelete = await axios.post(
+        "/api/projects/db-delete-project",
+        {
+          projectCUID,
+        }
+      );
+      const response = await axios.post("/api/projects/removeProject", {
+        projectCUID,
+        projects,
+      });
+
+      console.log(serverResOnDelete.data);
+
+      // dispatch(slice.actions.hasSuccess(serverResOnDelete.data));
+      dispatch(slice.actions.removeProjectSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
 
 export function getGroups(project) {
   return async () => {
@@ -190,15 +264,15 @@ export function getGroups(project) {
 export function getGroupsDetails(projectId) {
   return async () => {
     try {
-      const response = await axios.post(dataRoutes.fetchGroupsDetails, { projectId });
+      const response = await axios.post(dataRoutes.fetchGroupsDetails, {
+        projectId,
+      });
       dispatch(slice.actions.getGroupsSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
-
-
 
 export function addGroup(newGroup, groups, index) {
   return async () => {
@@ -256,8 +330,6 @@ export function addEmployees(newEmployee, employees) {
   };
 }
 
-
-
 export function getParticipants(projectId) {
   return async () => {
     try {
@@ -313,22 +385,6 @@ export function removeParticipant(index, removedParticipant) {
         removedParticipant,
       });
       dispatch(slice.actions.removeParticipantSuccess(response.data));
-    } catch (error) {
-      dispatch(slice.actions.hasError(error));
-    }
-  };
-}
-
-export function addProjects(newProject, Projects) {
-  console.log(Projects);
-  return async () => {
-    try {
-      const response = await axios.post(dataRoutes.addProject, {
-        newProject,
-        Projects,
-      });
-      console.log(response.data);
-      dispatch(slice.actions.addProjectsSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

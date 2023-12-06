@@ -22,7 +22,7 @@ const AddModule = ({ courseId }) => {
   const dispatch = useDispatch();
 
   const [addTaskBox, setAddTaskBox] = useState(false);
-  const {modules} = useSelector((state) => state.courses);
+  const {modules=[]} = useSelector((state) => state.courses);
   const handleAddTaskChange = () => {
     setAddTaskBox((prev) => !prev);
   };
@@ -37,8 +37,8 @@ const AddModule = ({ courseId }) => {
   };
 
   
-  const newId = parseInt(modules[modules.length-1].id) + 1
- const newOrder = modules[modules.length-1].moduleOrder + 1
+  const newId = parseInt(modules[modules.length-1]?.id) + 1
+ const newOrder = modules[modules.length-1]?.moduleOrder + 1
  const currentDate = new Date();
 const formattedDate = currentDate.toISOString();
 

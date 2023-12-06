@@ -2,6 +2,8 @@
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 // project import
 import chat from './chat';
@@ -25,7 +27,7 @@ const reducers = combineReducers({
   cart: persistReducer(
     {
       key: 'cart',
-      storage,
+      storage: AsyncStorage, //use to be storage
       keyPrefix: 'mantis-next-ts-'
     },
     cartReducer

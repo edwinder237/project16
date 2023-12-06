@@ -4,7 +4,11 @@ const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
   try {
-    const projects = await prisma.projects.findMany({});
+    const projects = await prisma.projects.findMany({
+      orderBy: {
+        createdAt: 'desc', // 'asc' for ascending, 'desc' for descending
+      }
+    });
 
     res.status(200).json({ projects });
     console.log("projects fetched successfully");

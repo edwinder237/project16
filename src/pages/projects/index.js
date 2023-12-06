@@ -8,11 +8,11 @@ import { getProjects } from "store/reducers/projects";
 import Layout from "layout";
 import Page from "components/Page";
 
-import ProjectListing from "sections/apps/project-manager/projects-list";
+import ProjectsList from "sections/apps/project-manager/projects-list/ProjectsList";
 
 // ==============================|| SAMPLE PAGE ||============================== //
 
- function  Projects() {
+function Projects() {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ import ProjectListing from "sections/apps/project-manager/projects-list";
 
   return (
     <Page title="Projects">
-      <ProjectListing />
+      <ProjectsList />
     </Page>
   );
 }

@@ -3,7 +3,6 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
-import { compare } from "bcrypt";
 
 // third-party
 import axios from "axios";
@@ -74,11 +73,10 @@ export default NextAuth({
   ],
   callbacks: {
     jwt: ({ token, user, account }) => {
-      
       if (user) {
-        console.log(user)
         token.id = user.id;
         token.provider = account?.provider;
+        token.userProps = { sub_org: user.subOrganizationId, sub_org_name: user.subOrganizationName };
       }
       return token;
     },

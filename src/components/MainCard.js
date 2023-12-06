@@ -16,6 +16,7 @@ const headerSX = {
 const MainCard = forwardRef(
   (
     {
+      customColor,
       border = true,
       boxShadow,
       children,
@@ -44,6 +45,7 @@ const MainCard = forwardRef(
         ref={ref}
         {...others}
         sx={{
+          bgcolor:theme.palette.primary,
           position: 'relative',
           border: border ? '1px solid' : 'none',
           borderRadius: 1,
