@@ -7,14 +7,17 @@ const prisma = new PrismaClient();
 export default async function handler(req, res) {
     try {
 
-      const { newEvent } = req.body;
+      const { newEvent,events } = req.body;
+
+      const id = events[0].projectId;
+
 
       delete newEvent.id;
       const event = {
         title: newEvent.title,
         description: newEvent.description,
         eventType: "course",
-        projectId: 1, // Replace with the actual project ID
+        projectId: id, // Replace with the actual project ID
         courseId: 1, // Replace with the actual course ID
         start: newEvent.start, // Replace with the actual start date and time
         end: newEvent.end, // Replace with the actual end date and time

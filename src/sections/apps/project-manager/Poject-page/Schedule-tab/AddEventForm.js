@@ -1,12 +1,13 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
 
 // material-ui
 import { useTheme } from "@mui/material/styles";
 import {
   Button,
+  Box,
+  CardContent,
   DialogActions,
-  DialogContent,
-  DialogTitle,
   Divider,
   FormControl,
   FormControlLabel,
@@ -22,6 +23,7 @@ import {
   TextField,
   Tooltip,
   Typography,
+  Radio,
 } from "@mui/material";
 import {
   LocalizationProvider,
@@ -37,8 +39,12 @@ import { useFormik, Form, FormikProvider } from "formik";
 // project imports
 import ColorPalette from "./ColorPalette";
 import IconButton from "components/@extended/IconButton";
+import MainCard from "components/MainCard";
+import AddCourse from "./form/addCourse";
+import AddInstructors from "./form/addInstructor";
+import Suggestions from "./form/suggestions";
 
-import { dispatch,useSelector } from "store";
+import { dispatch, useSelector } from "store";
 import { openSnackbar } from "store/reducers/snackbar";
 import { createEvent, deleteEvent, updateEvent } from "store/reducers/calendar";
 
@@ -66,10 +72,14 @@ const getInitialValues = (event, range) => {
 
 // ==============================|| CALENDAR EVENT ADD / EDIT / DELETE ||============================== //
 
-const AddEventFrom = ({ event, range, onCancel,events }) => {
-  const {error} = useSelector((state) =>  state.calendar);
+const AddEventFrom = ({ event, range, onCancel, events }) => {
   const theme = useTheme();
+  const { isAdding } = useSelector((state) => state.calendar);
+
+  const [eventType, setEventType] = useState("course");
+  const [participants, setParticipants] = useState("no participants");
   const isCreating = !event;
+  const groups = ["group 1", "group 2", "group 3"];
 
   const backgroundColor = [
     {
@@ -173,9 +183,8 @@ const AddEventFrom = ({ event, range, onCancel,events }) => {
     color: Yup.string().max(255),
     textColor: Yup.string().max(255),
   });
-
   const deleteHandler = () => {
-    dispatch(deleteEvent(event?.id,events));
+    dispatch(deleteEvent(event?.id, events));
     dispatch(
       openSnackbar({
         open: true,
@@ -188,11 +197,11 @@ const AddEventFrom = ({ event, range, onCancel,events }) => {
       })
     );
   };
-
   const formik = useFormik({
     initialValues: getInitialValues(event, range),
     validationSchema: EventSchema,
     onSubmit: (values, { setSubmitting }) => {
+
       try {
         const newEvent = {
           title: values.title,
@@ -203,9 +212,9 @@ const AddEventFrom = ({ event, range, onCancel,events }) => {
           start: values.start,
           end: values.end,
         };
-
         if (event) {
-          dispatch(updateEvent(event.id, newEvent,events));
+          console.log("updating", event);
+            dispatch(updateEvent(event.id, newEvent,events));
           dispatch(
             openSnackbar({
               open: true,
@@ -218,9 +227,9 @@ const AddEventFrom = ({ event, range, onCancel,events }) => {
             })
           );
         } else {
-          console.log(newEvent,events)
-      
-         dispatch(createEvent(newEvent,events));
+          console.log(newEvent, events);
+
+          dispatch(createEvent(newEvent, events,isAdding));
 
           dispatch(
             openSnackbar({
@@ -256,13 +265,32 @@ const AddEventFrom = ({ event, range, onCancel,events }) => {
     <FormikProvider value={formik}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-          <DialogTitle>{event ? "Edit Event" : "Add Event"}</DialogTitle>
-          <Divider />
-          <DialogContent sx={{ p: 2.5 }}>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Stack spacing={1.25}>
-                  <InputLabel htmlFor="cal-title">Title</InputLabel>
+          <MainCard
+            title={event ? "Edit Event" : "Add Event"}
+            content={false}
+            sx={{ overflow: "visible" }}
+          >
+            <CardContent>
+              <Grid
+                container
+                spacing={3}
+                sx={{ padding: 0, alignItems: "center" }}
+              >
+                <Grid
+                  item
+                  xs={12}
+                  sm={3}
+                  lg={3}
+                  sx={{ pt: { xs: 2, sm: "1 !important" } }}
+                >
+                  <InputLabel
+                    htmlFor="cal-title"
+                    sx={{ textAlign: { xs: "left", sm: "right" } }}
+                  >
+                    Title
+                  </InputLabel>
+                </Grid>
+                <Grid item xs={12} sm={8} lg={7}>
                   <TextField
                     fullWidth
                     id="cal-title"
@@ -271,40 +299,26 @@ const AddEventFrom = ({ event, range, onCancel,events }) => {
                     error={Boolean(touched.title && errors.title)}
                     helperText={touched.title && errors.title}
                   />
-                </Stack>
-              </Grid>
-              <Grid item xs={12}>
-                <Stack spacing={1.25}>
-                  <InputLabel htmlFor="cal-participants">Curriculum</InputLabel>
-                  <Select
-                    labelId="cal-participants"
-                    id="cal-participants"
-                    value={null}
-                    label="Participants/Groups"
-                    onChange={null}
-                  >
-                    <MenuItem value="hello"></MenuItem>
-                  </Select>
-                </Stack>
-              </Grid>
-              <Grid item xs={12}>
-                <Stack spacing={1.25}>
-                  <InputLabel htmlFor="cal-participants">Course</InputLabel>
-                  <Select
-                    labelId="cal-participants"
-                    id="cal-participants"
-                    value={null}
-                    label="Participants/Groups"
-                    onChange={null}
-                  >
-                    <MenuItem value="hello 2"></MenuItem>
-                  </Select>
-                </Stack>
-              </Grid>
+                </Grid>
 
-              <Grid item xs={12}>
-                <Stack spacing={1.25}>
-                  <InputLabel htmlFor="cal-description">Description</InputLabel>
+                <Grid
+                  item
+                  xs={12}
+                  sm={3}
+                  lg={3}
+                  sx={{
+                    pt: { xs: 2, sm: "1 !important" },
+                    alignSelf: "flex-start",
+                  }}
+                >
+                  <InputLabel
+                    htmlFor="cal-description"
+                    sx={{ textAlign: { xs: "left", sm: "right" } }}
+                  >
+                    Description
+                  </InputLabel>
+                </Grid>
+                <Grid item xs={12} sm={8} lg={7}>
                   <TextField
                     fullWidth
                     id="cal-description"
@@ -315,185 +329,347 @@ const AddEventFrom = ({ event, range, onCancel,events }) => {
                     error={Boolean(touched.description && errors.description)}
                     helperText={touched.description && errors.description}
                   />
-                </Stack>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Stack spacing={1.25}>
-                  <InputLabel htmlFor="cal-participants">
-                    Participants/Groups
+                </Grid>
+                <Grid item xs={12}>
+                  <Divider />
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sm={3}
+                  lg={3}
+                  sx={{ pt: { xs: 2, sm: "1 !important" } }}
+                >
+                  <InputLabel sx={{ textAlign: { xs: "left", sm: "right" } }}>
+                    Event type
                   </InputLabel>
-                  <Select
-                    labelId="cal-participants"
-                    id="cal-participants"
-                    value={null}
-                    label="Participants/Groups"
-                    onChange={null}
+                </Grid>
+                <Grid item xs={12} sm={8} lg={7}>
+                  <RadioGroup
+                    row
+                    id="project-language"
+                    name="language"
+                    defaultValue="course"
+                    {...getFieldProps("language")}
                   >
-                    <MenuItem value={10}>Group 1</MenuItem>
-                    <MenuItem value={20}>Group 2</MenuItem>
-                    <MenuItem value={30}>Group 3</MenuItem>
-                  </Select>
-                </Stack>
-              </Grid>
-
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={values.allDay}
-                      {...getFieldProps("allDay")}
+                    <FormControlLabel
+                      value="course"
+                      control={<Radio />}
+                      label="Course"
+                      onChange={(e) => setEventType(e.target.value)}
                     />
-                  }
-                  label="All day"
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Stack spacing={1.25}>
-                  <InputLabel htmlFor="cal-start-date">Start Date</InputLabel>
-                  <MobileDateTimePicker
-                    value={new Date(values.start)}
-                    format="dd/MM/yyyy hh:mm a"
-                    onChange={(date) => setFieldValue("start", date)}
-                    slotProps={{
-                      textField: {
-                        InputProps: {
-                          endAdornment: (
-                            <InputAdornment
-                              position="end"
-                              sx={{ cursor: "pointer" }}
-                            >
-                              <CalendarOutlined />
-                            </InputAdornment>
-                          ),
-                        },
-                      },
-                    }}
-                  />
-                  {touched.start && errors.start && (
-                    <FormHelperText error={true}>{errors.start}</FormHelperText>
-                  )}
-                </Stack>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Stack spacing={1.25}>
-                  <InputLabel htmlFor="cal-end-date">End Date</InputLabel>
-                  <MobileDateTimePicker
-                    value={new Date(values.end)}
-                    format="dd/MM/yyyy hh:mm a"
-                    onChange={(date) => setFieldValue("end", date)}
-                    slotProps={{
-                      textField: {
-                        InputProps: {
-                          endAdornment: (
-                            <InputAdornment
-                              position="end"
-                              sx={{ cursor: "pointer" }}
-                            >
-                              <CalendarOutlined />
-                            </InputAdornment>
-                          ),
-                        },
-                      },
-                    }}
-                  />
-                  {touched.end && errors.end && (
-                    <FormHelperText error={true}>{errors.end}</FormHelperText>
-                  )}
-                </Stack>
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <Typography variant="subtitle1">
-                      Background Color
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl>
-                      <RadioGroup
-                        row
-                        aria-label="color"
-                        {...getFieldProps("color")}
-                        onChange={(e) => setFieldValue("color", e.target.value)}
-                        name="color-radio-buttons-group"
-                        sx={{ "& .MuiFormControlLabel-root": { mr: 2 } }}
-                      >
-                        {backgroundColor.map((item, index) => (
-                          <ColorPalette
-                            key={index}
-                            value={item.value}
-                            color={item.color}
-                          />
-                        ))}
-                      </RadioGroup>
-                    </FormControl>
-                  </Grid>
+                    <FormControlLabel
+                      value="other"
+                      control={<Radio />}
+                      label="Other"
+                      onChange={(e) => setEventType(e.target.value)}
+                    />
+                  </RadioGroup>
                 </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <Typography variant="subtitle1">Text Color</Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl component="fieldset">
-                      <RadioGroup
-                        row
-                        aria-label="textColor"
-                        {...getFieldProps("textColor")}
-                        onChange={(e) =>
-                          setFieldValue("textColor", e.target.value)
-                        }
-                        name="text-color-radio-buttons-group"
-                        sx={{ "& .MuiFormControlLabel-root": { mr: 2 } }}
+                <Grid item sx={{ pt: { xs: 2, sm: "1 !important" } }}>
+                  {eventType === "course" && (
+                    <Grid container spacing={2}>
+                      <Grid
+                        item
+                        xs={12}
+                        sm={3}
+                        lg={3}
+                        sx={{ pt: { xs: 2, sm: "1 !important" } }}
                       >
-                        {textColor.map((item, index) => (
-                          <ColorPalette
-                            key={index}
-                            value={item.value}
-                            color={item.color}
-                          />
-                        ))}
-                      </RadioGroup>
-                    </FormControl>
-                  </Grid>
+                        <InputLabel
+                          htmlFor="cal-participants"
+                          sx={{ textAlign: { xs: "left", sm: "right" } }}
+                        >
+                          Course
+                        </InputLabel>
+                      </Grid>
+                      <Grid item xs={12} sm={8} lg={7}>
+                        <AddCourse />
+                      </Grid>
+
+                      <Grid
+                        item
+                        xs={12}
+                        sm={3}
+                        lg={3}
+                        sx={{ pt: { xs: 2, sm: "1 !important" } }}
+                      >
+                        <InputLabel
+                          htmlFor="cal-participants"
+                          sx={{ textAlign: { xs: "left", sm: "right" } }}
+                        >
+                          Instructor
+                        </InputLabel>
+                      </Grid>
+                      <Grid item xs={12} sm={8} lg={7}>
+                        <AddInstructors />
+                      </Grid>
+
+                      <Grid item xs={12} sm={3} lg={3} sx={{}}>
+                        {" "}
+                      </Grid>
+                      <Grid item xs={12} sm={8} lg={7} sx={{ mt: -1 }}>
+                        <Suggestions />
+                      </Grid>
+                    </Grid>
+                  )}
                 </Grid>
-              </Grid>
-            </Grid>
-          </DialogContent>
-          <Divider />
-          <DialogActions sx={{ p: 2.5 }}>
-            <Grid container justifyContent="space-between" alignItems="center">
-              <Grid item>
-                {!isCreating && (
-                  <Tooltip title="Delete Event" placement="top">
-                    <IconButton
-                      onClick={deleteHandler}
-                      size="large"
-                      color="error"
-                    >
-                      <DeleteFilled />
-                    </IconButton>
-                  </Tooltip>
-                )}
-              </Grid>
-              <Grid item>
-                <Stack direction="row" spacing={2} alignItems="center">
-                  <Button color="error" onClick={onCancel}>
-                    Cancel
-                  </Button>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    disabled={isSubmitting}
+
+                <Grid
+                  item
+                  xs={12}
+                  sm={3}
+                  lg={3}
+                  sx={{ pt: { xs: 2, sm: "1 !important" } }}
+                >
+                  <InputLabel
+                    htmlFor="cal-participants"
+                    sx={{ textAlign: { xs: "left", sm: "right" } }}
                   >
-                    {event ? "Edit" : "Add"}
-                  </Button>
-                </Stack>
+                    Participants
+                  </InputLabel>
+                </Grid>
+                <Grid item xs={12} sm={8} lg={7}>
+                  <FormControl fullWidth>
+                    <Select
+                      labelId="cal-participants"
+                      id="cal-participants"
+                      value={participants}
+                      onChange={(e) => setParticipants(e.target.value)}
+                    >
+                      {groups.map((group) => (
+                        <MenuItem value={group}>{group}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Divider />
+                </Grid>
+
+                <Grid
+                  item
+                  xs={12}
+                  sm={3}
+                  lg={3}
+                  sx={{ pt: { xs: 2, sm: "1 !important" } }}
+                >
+                  <InputLabel
+                    htmlFor="cal-participants"
+                    sx={{ textAlign: { xs: "left", sm: "right" } }}
+                  >
+                    allDay
+                  </InputLabel>
+                </Grid>
+
+                <Grid item xs={12} sm={8} lg={7}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={values.allDay}
+                        {...getFieldProps("allDay")}
+                      />
+                    }
+                  />
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sm={3}
+                  lg={3}
+                  sx={{ pt: { xs: 2, sm: "1 !important" } }}
+                >
+                  <InputLabel
+                    htmlFor="cal-start-date"
+                    sx={{ textAlign: { xs: "left", sm: "right" } }}
+                  >
+                    Date
+                  </InputLabel>
+                </Grid>
+
+                <Grid item xs={12} sm={8} lg={7}>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="cal-start-date">
+                          Start Date
+                        </InputLabel>
+                        <MobileDateTimePicker
+                          value={new Date(values.start)}
+                          format="dd/MM/yyyy hh:mm a"
+                          onChange={(date) => setFieldValue("start", date)}
+                          slotProps={{
+                            textField: {
+                              InputProps: {
+                                endAdornment: (
+                                  <InputAdornment
+                                    position="end"
+                                    sx={{ cursor: "pointer" }}
+                                  >
+                                    <CalendarOutlined />
+                                  </InputAdornment>
+                                ),
+                              },
+                            },
+                          }}
+                        />
+                        {touched.start && errors.start && (
+                          <FormHelperText error={true}>
+                            {errors.start}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="cal-end-date">End Date</InputLabel>
+                        <MobileDateTimePicker
+                          value={new Date(values.end)}
+                          format="dd/MM/yyyy hh:mm a"
+                          onChange={(date) => setFieldValue("end", date)}
+                          slotProps={{
+                            textField: {
+                              InputProps: {
+                                endAdornment: (
+                                  <InputAdornment
+                                    position="end"
+                                    sx={{ cursor: "pointer" }}
+                                  >
+                                    <CalendarOutlined />
+                                  </InputAdornment>
+                                ),
+                              },
+                            },
+                          }}
+                        />
+                        {touched.end && errors.end && (
+                          <FormHelperText error={true}>
+                            {errors.end}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  <Divider />
+                </Grid>
+
+                <Grid
+                  item
+                  xs={12}
+                  sm={3}
+                  lg={3}
+                  sx={{
+                    pt: { xs: 2, sm: "1 !important" },
+                  }}
+                >
+                  <InputLabel
+                    htmlFor="background-color"
+                    sx={{ textAlign: { xs: "left", sm: "right" } }}
+                  >
+                    Background Color
+                  </InputLabel>
+                </Grid>
+
+                <Grid item xs={12} sm={8} lg={7}>
+                  <FormControl>
+                    <RadioGroup
+                      row
+                      aria-label="color"
+                      {...getFieldProps("color")}
+                      onChange={(e) => setFieldValue("color", e.target.value)}
+                      name="color-radio-buttons-group"
+                      sx={{ "& .MuiFormControlLabel-root": { mr: 2 } }}
+                    >
+                      {backgroundColor.map((item, index) => (
+                        <ColorPalette
+                          key={index}
+                          value={item.value}
+                          color={item.color}
+                        />
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sm={3}
+                  lg={3}
+                  sx={{
+                    pt: { xs: 2, sm: "1 !important" },
+                  }}
+                >
+                  <InputLabel
+                    htmlFor="text-color"
+                    sx={{ textAlign: { xs: "left", sm: "right" } }}
+                  >
+                    Text Color
+                  </InputLabel>
+                </Grid>
+                <Grid item xs={12} sm={8} lg={7}>
+                  <FormControl component="fieldset">
+                    <RadioGroup
+                      row
+                      aria-label="textColor"
+                      {...getFieldProps("textColor")}
+                      onChange={(e) =>
+                        setFieldValue("textColor", e.target.value)
+                      }
+                      name="text-color-radio-buttons-group"
+                      sx={{ "& .MuiFormControlLabel-root": { mr: 2 } }}
+                    >
+                      {textColor.map((item, index) => (
+                        <ColorPalette
+                          key={index}
+                          value={item.value}
+                          color={item.color}
+                        />
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                </Grid>
               </Grid>
-            </Grid>
-          </DialogActions>
+            </CardContent>
+            <Divider />
+            <DialogActions sx={{ p: 2.5 }}>
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Grid item>
+                  {!isCreating && (
+                    <Tooltip title="Delete Event" placement="top">
+                      <IconButton
+                        onClick={deleteHandler}
+                        size="large"
+                        color="error"
+                      >
+                        <DeleteFilled />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                </Grid>
+                <Grid item>
+                  <Stack direction="row" spacing={2} alignItems="center">
+                    <Button color="error" onClick={onCancel}>
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      disabled={isSubmitting}
+                    >
+                      {event ? "Edit" : "Add"}
+                    </Button>
+                  </Stack>
+                </Grid>
+              </Grid>
+            </DialogActions>
+          </MainCard>
         </Form>
       </LocalizationProvider>
     </FormikProvider>

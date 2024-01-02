@@ -8,6 +8,7 @@ const initialState = {
   //calendarView: 'dayGridMonth',
   calendarView: "listWeek",
   error: false,
+  isAdding: false,
   events: [],
   isLoader: false,
   isModalOpen: false,
@@ -30,6 +31,11 @@ const calendar = createSlice({
     hasError(state, action) {
       state.isLoader = false;
       state.error = action.payload;
+    },
+    // IS ADDING?
+    isAdding(state, action) {
+      console.log('from slice')
+      state.isAdding = action.payload;
     },
 
     // event list
@@ -118,7 +124,7 @@ export function getEvents(projectId) {
   };
 }
 
-export function createEvent(newEvent, events) {
+export function createEvent(newEvent, events,isAdding) {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
@@ -126,13 +132,13 @@ export function createEvent(newEvent, events) {
         newEvent,
         events,
       });
-      console.log(response.data);
       await dispatch(calendar.actions.createEvent(response.data));
       const serverResponse = await axios.post("/api/calendar/db-create-event", {
         newEvent,
+        events,
       });
-      dispatch(calendar.actions.hasError(serverResponse.data));
-      console.log(serverResponse);
+      console.log(serverResponse.data);
+      dispatch(calendar.actions.isAdding(!isAdding));
     } catch (error) {
       dispatch(calendar.actions.hasError(error));
     }
@@ -161,11 +167,11 @@ export function updateEvent(eventId, event, events) {
   };
 }
 
-export function deleteEvent(eventId,events) {
+export function deleteEvent(eventId, events) {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
-      await axios.post("/api/calendar/delete", { eventId,events });
+      await axios.post("/api/calendar/delete", { eventId, events });
       await dispatch(calendar.actions.deleteEvent({ eventId }));
       const serverResponse = await axios.post("/api/calendar/db-delete-event", {
         eventId,

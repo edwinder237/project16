@@ -13,7 +13,7 @@ import { DownOutlined, RightOutlined } from "@ant-design/icons";
 
 export default function Moduleswidget({ eventState }) {
   const { courseTitle, modules } = eventState;
-  if (courseTitle) {
+
     return (
       <MainCard
         sx={{ maxHeight: 1, flexGrow: 1, maxWidth: 1, overflowY: "auto" }}
@@ -25,7 +25,7 @@ export default function Moduleswidget({ eventState }) {
           defaultExpandIcon={<RightOutlined />}
           multiSelect
         >
-          {modules.map((module, i) => (
+          {modules?.map((module, i) => (
             <TreeItem nodeId={i} label={`${module.title}`}>
               <VerticalLinearStepper activities={module.activities} />
             </TreeItem>
@@ -33,5 +33,5 @@ export default function Moduleswidget({ eventState }) {
         </TreeView>
       </MainCard>
     );
-  } else return <>Plases select an event</>;
+
 }

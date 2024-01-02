@@ -95,18 +95,27 @@ model organizations {
 }
 
 model sub_organizations {
-  id          Int        @id @default(autoincrement())
-  title       String
-  description String?
-  createdAt   DateTime   @default(now())
-  lastUpdated DateTime   @default(now())
-  updatedby   String
-  createdBy   String
-  users       User[]
-  projects    projects[]
-
+  id             Int           @id @default(autoincrement())
+  title          String
+  description    String?
+  createdAt      DateTime      @default(now())
+  lastUpdated    DateTime      @default(now())
+  updatedby      String
+  createdBy      String
+  users          User[]
+  projects       projects[]
   organization   organizations @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId String        @unique
+  courses        courses[]
+  course_tags    course_tags[]
+
+}
+
+model roles {
+  id                   Int               @id @default(autoincrement())
+  title                String
+  sub_organizationId   Int
+
 }
 
 model projects {
@@ -214,47 +223,85 @@ model group_participants {
   @@index([participantId])
 }
 
+model tags {
+  id          Int           @id @default(autoincrement())
+  title       String
+  course_tags course_tags[]
+  module_tags module_tags[]
+}
+
+model course_tags {
+  id                   Int               @id @default(autoincrement())
+  courseId             Int
+  courseInfo           courses           @relation(fields: [courseId], references: [id])
+  tagId                Int
+  TagInfo              tags              @relation(fields: [tagId], references: [id])
+  sub_organizationId   Int
+  sub_organizationInfo sub_organizations @relation(fields: [sub_organizationId], references: [id])
+
+  @@index([sub_organizationId])
+  @@index([tagId])
+  @@index([courseId])
+}
+
+model module_tags {
+  id         Int     @id @default(autoincrement())
+  moduleId   Int
+  moduleInfo modules @relation(fields: [moduleId], references: [id])
+  tagId      Int
+  TagInfo    tags    @relation(fields: [tagId], references: [id])
+
+  @@index([tagId])
+  @@index([moduleId])
+}
+
 model courses {
-  id                 Int                  @id @default(autoincrement())
-  cuid               String               @default(cuid())
-  userSubParentId    Int?
-  createdAt          DateTime?            @default(now())
-  createdBy          String
-  lastUpdated        DateTime?            @updatedAt
-  published          Boolean?
-  title              String
-  summary            String?
-  language           String?
-  deliveryMethod     String?
-  goLiveDate         DateTime?
-  maxParticipants    Int?
-  deadline           DateTime?
-  duration           Int?
-  cost               Float?
-  level              String?
-  accessRestrictions String?
-  certification      String?
-  tags               String?
-  CourseType         String?
-  courseCategory     String?
-  courseStatus       String?
-  targetAudience     String?
-  backgroundImg      String?
-  resources          String?
-  syllabusId         Int?
-  JSONSyllabus       Json?
-  rating             Float?
-  code               String?
-  version            String?
-  modules            modules[]
-  events             events[]
-  curriculum_courses curriculum_courses[]
+  id                   Int                  @id @default(autoincrement())
+  cuid                 String               @default(cuid())
+  sub_organizationId   Int
+  sub_organizationInfo sub_organizations    @relation(fields: [sub_organizationId], references: [id])
+  createdAt            DateTime?            @default(now())
+  createdBy            String
+  lastUpdated          DateTime?            @updatedAt
+  published            Boolean?
+  title                String
+  summary              String?
+  language             String?
+  deliveryMethod       String?
+  goLiveDate           DateTime?
+  maxParticipants      Int?
+  deadline             DateTime?
+  duration             Int?
+  cost                 Float?
+  level                String?
+  accessRestrictions   String?
+  certification        String?
+  tags                 String?
+  CourseType           String?
+  courseCategory       String?
+  courseStatus         String?
+  courseRoles          String?
+  targetAudience       String?
+  isMandatoryToAllRole Boolean              @default(false)
+  backgroundImg        String?
+  resources            String?
+  syllabusId           Int?
+  JSONSyllabus         Json?
+  rating               Float?
+  code                 String?
+  version              String?
+  modules              modules[]
+  events               events[]
+  curriculum_courses   curriculum_courses[]
+  course_tags          course_tags[]
+
+  @@index([sub_organizationId])
 }
 
 model modules {
-  id            Int          @id @default(autoincrement())
-  createdAt     DateTime     @default(now())
-  lastUpdated   DateTime     @updatedAt
+  id            Int           @id @default(autoincrement())
+  createdAt     DateTime      @default(now())
+  lastUpdated   DateTime      @updatedAt
   published     Boolean
   title         String
   summary       String?
@@ -264,9 +311,10 @@ model modules {
   moduleStatus  String?
   backgroundImg String?
   courseId      Int
-  course        courses      @relation(fields: [courseId], references: [id])
+  course        courses       @relation(fields: [courseId], references: [id])
   activities    activities[]
   moduleOrder   Int?
+  module_tags   module_tags[]
 
   @@index([courseId])
 }

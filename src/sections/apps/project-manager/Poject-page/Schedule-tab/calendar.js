@@ -44,12 +44,15 @@ import { PlusOutlined } from "@ant-design/icons";
 
 const Calendar = ({ getSelectedEventDetails, curriculum }) => {
   const [loading, setLoading] = useState(true);
+  
   const [selectedEventDetails, setSelectedEventDetails] = useState("");
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const { calendarView, events, isModalOpen, selectedRange, selectedEventId } =
     useSelector((state) => state.calendar);
 
   const { singleProject } = useSelector((state) => state.projects);
+  const { isAdding } = useSelector((state) => state.calendar);
+
 
   const selectedEvent = useSelector((state) => {
     const { events, selectedEventId } = state.calendar;
@@ -59,6 +62,8 @@ const Calendar = ({ getSelectedEventDetails, curriculum }) => {
     return null;
   });
 
+  const [Events,setEvents] =useState(events)
+
   const calendarRef = useRef(null);
 
   useEffect(() => {
@@ -66,8 +71,9 @@ const Calendar = ({ getSelectedEventDetails, curriculum }) => {
     const viewCall = dispatch(updateCalendarView(newView));
     const eventCall = dispatch(getEvents(singleProject.id));
     Promise.all([viewCall, eventCall]).then(() => setLoading(false));
+    console.log('events feteched')
     // eslint-disable-next-line
-  }, []);
+  }, [isAdding]);
 
   useEffect(() => {
     const calendarEl = calendarRef.current;
@@ -80,6 +86,11 @@ const Calendar = ({ getSelectedEventDetails, curriculum }) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matchDownSM]);
+
+  useEffect(()=>{
+    //setEvents(events)
+console.log('event changes',events,isAdding)
+  },[isAdding])
 
   const [date, setDate] = useState(new Date());
 
@@ -186,8 +197,9 @@ const Calendar = ({ getSelectedEventDetails, curriculum }) => {
 
   if (loading) return <Loader />;
 
-  console.log(selectedEventDetails);
-  if (events)
+  //console.log(selectedEventDetails);
+  console.log('re-render cal',events)
+  if (Events)
     return (
       <MainCard
         sx={{ mt: 0, width: 1 }}
@@ -214,7 +226,7 @@ const Calendar = ({ getSelectedEventDetails, curriculum }) => {
               editable
               droppable
               selectable
-              events={events}
+              events={Events}
               ref={calendarRef}
               rerenderDelay={10}
               initialDate={date}

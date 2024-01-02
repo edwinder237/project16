@@ -103,7 +103,7 @@ const ProjectsList = () => {
   };
   const { data } = useSession();
   const { user, token } = data;
-  const sub_organization_Id = token.userProps.sub_org;
+  const sub_organization_Id = token.userProps ? token.userProps.sub_org : null;
 
   return (
     <Fragment>

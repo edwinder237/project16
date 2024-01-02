@@ -20,6 +20,7 @@ export default async function handler(req, res) {
                       select:{
                         course:{
                           select:{
+                            id:true,
                             title:true
                           }
                         }

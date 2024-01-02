@@ -24,6 +24,7 @@ import HeaderCountCard from "components/cards/statistics/HeaderCountCard";
 import LabelledTasks from "./Header/LabelledTasks";
 import TabSettings from "./Settings-tab/TabSettings";
 import SearchContainer from "./Curriculum-tab/SearchContainer";
+import AgendaContainer from "./Schedule-tab";
 
 // assets
 import {
@@ -40,11 +41,7 @@ const EnrolmentTAB = dynamic(() =>
     (err) => console.error(err)
   )
 );
-const AgendaContainer = dynamic(() =>
-  import("sections/apps/project-manager/Poject-page/Schedule-tab").catch(
-    (err) => console.error(err)
-  )
-);
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

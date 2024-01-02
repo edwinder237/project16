@@ -38,8 +38,8 @@ export default async function handler(req, res) {
       id: user.id,
       name: user.name,
       email: user.email,
-      subOrganizationId:  user.sub_organizationId,
-      subOrganizationName: user.sub_organization.title,
+      subOrganizationId: user && user.sub_organizationId ? user.sub_organizationId: null ,
+      subOrganizationName: user && user.sub_organization ? user.sub_organization.title : "sub_org missing",
     });
   } catch (error) {
     console.error("Error fetching user:", error);
